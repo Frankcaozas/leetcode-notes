@@ -1441,3 +1441,32 @@ var twoSum = function(numbers, target) {
     return [-1,-1]
 };
 ```
+
+### 350. 两个数组的交集 II
+哈希表
+```js
+var intersect = function (nums1, nums2) {
+		//用哈希表记录长度更小的数组
+		//默认nums1比nums2小,如果不是反着返回
+    if (nums1.length > nums2.length)
+        return intersect(nums2, nums1)
+    const map = new Map()
+    nums1.forEach((num) => {
+        if (!map.has(num)) {
+            map.set(num, 1)
+        } else {
+            map.set(num, map.get(num) + 1)
+        }
+    })
+    const intersection = []
+    nums2.forEach((num) => {
+        if (map.has(num)) {
+            intersection.push(num)
+            map.set(num, map.get(num) - 1)
+            if(map.get(num) ===0 )
+                map.delete(num)
+        }
+    })
+    return intersection
+};
+```
