@@ -6,6 +6,7 @@
 
 // @lc code=start
 function firstUniqChar(s: string): number {
+  //第一次遍历存到哈希表中，如果重复值改为-1， 未重复值为索引
   const position = new Map();
     const n = s.length;
     for (let [i, ch] of Array.from(s).entries()) {
