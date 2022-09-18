@@ -9,9 +9,9 @@
 假设来到当前节点 cur，开始时 cur 来到头节点位置
 
 - 如果 cur 没有左孩子，cur向右移动(cur = cur.right)
-- 如果 cur 有左孩子，找到左子树上**最右**的节点 mostRight 
-   - a.如果 mostRight 的右指针指向空，让其指向 cur， 然后 cur 向左移动(cur = cur.left)
-   - b.如果 mostRight 的右指针指向 cur，让其指向 null， 然后 cur 向右移动(cur = cur.right)
+- 如果 cur 有左孩子，找到左子树上**最右**的节点 mostRight
+  - a.如果 mostRight 的右指针指向空，让其指向 cur， 然后 cur 向左移动(cur = cur.left)
+  - b.如果 mostRight 的右指针指向 cur，让其指向 null， 然后 cur 向右移动(cur = cur.right)
 - cur 为空时遍历停止
 
 #### 前序遍历
@@ -57,10 +57,8 @@ public List<Integer> preorderTraversal(TreeNode root) {
 
 #### 中序遍历
 
--  对于没有左子树的节点只到达一次，直接打印 
--  对于有左子树的节点会到达两次，第二次到达时打印 
-
- 
+- 对于没有左子树的节点只到达一次，直接打印
+- 对于有左子树的节点会到达两次，第二次到达时打印
 
 #### 后序遍历
 
@@ -131,7 +129,6 @@ public List<Integer> inorderTraversal(TreeNode root) {
 2迭代
 
 stack 辅助
-
 
 ### 层序遍历
 
@@ -262,7 +259,7 @@ class Solution {
         int cnt = 0;
         Deque<TreeNode> stack = new LinkedList<>();
         while(root!= null || !stack.isEmpty()){
-        
+    
             while(root!=null){
                 stack.push(root);
                 root= root.left;
@@ -666,9 +663,11 @@ class Solution {
 ```
 
 ### [147. 对链表进行插入排序](https://leetcode.cn/problems/insertion-sort-list/)
+
 时间复杂度 N(n2)
 空间复杂度 N(1)
 思路：在左端维护一个有序数组，并记录最后一个节点
+
 ```javascript
 /**
  * Definition for singly-linked list.
@@ -711,6 +710,7 @@ var insertionSortList = function(head) {
 ```
 
 ### [148. 排序链表](https://leetcode-cn.com/problems/sort-list/)
+
 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
 示例 1：
@@ -719,7 +719,6 @@ var insertionSortList = function(head) {
 
 时间复杂度：O(n \log n)O(nlogn)，其中 nn 是链表的长度。
 空间复杂度：O(\log n)O(logn)，其中 nn 是链表的长度。空间复杂度主要取决于递归调用的栈空间。
-
 
 ```java
 class Solution {
@@ -860,7 +859,7 @@ public boolean hasCycle(ListNode head) {
             if(fast == slow){
                 return true;
             }
-        
+    
         }
         return false;
     }
@@ -1207,7 +1206,7 @@ class Solution {
             if(s.isMirror){
                 String str = s.substring(i,s.length);
             }
-        
+    
 
         }
     }
@@ -1340,12 +1339,12 @@ public int removeDuplicates(int[] nums) {
         int cnt=1;
         int cur = nums[0];
         for(int i=1; i<nums.length;i++){
-        
+    
             if(nums[i]!=cur){
                 cur = nums[i];
                 cnt++;
                 nums[cnt-1]=nums[i];
-            
+        
             }
         }
         return cnt;
@@ -1404,7 +1403,9 @@ public int longestConsecutive(int[] nums) {
 ```
 
 ### [167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+
 1.二分 O(nlogn)
+
 ```javascript
 var twoSum = function(numbers, target) {
     const ans = [-1,-1]
@@ -1425,7 +1426,9 @@ var twoSum = function(numbers, target) {
     return ans
 };
 ```
+
 2.双指针
+
 ```javascript
 var twoSum = function(numbers, target) {
     let left=0; right=numbers.length-1
@@ -1443,7 +1446,9 @@ var twoSum = function(numbers, target) {
 ```
 
 ### 350. 两个数组的交集 II
+
 哈希表
+
 ```js
 var intersect = function (nums1, nums2) {
 		//用哈希表记录长度更小的数组
