@@ -7,18 +7,21 @@
 // @lc code=start
 function threeSum(nums: number[]): number[][] {
   const threeSumRes: number[][] = []
-  const sorted = nums.sort((a,b)=> a-b)
-  for(let i=0; i<nums.length; i++){
-    const a = sorted[i]
-    let left = i+1 
-    let right = nums.length-1
-    while(right>left){
-      if(sorted[left]===sorted[left-1] || (right<nums.length-1 && sorted[right]===sorted[right+1])) continue
-      if(a+sorted[left]+sorted[right]===0){
-        threeSumRes.push([a,sorted[left],sorted[right]])
+  const sorted = nums.sort((a: number,b: number)=> a-b)
+  for (let i = 0; i < nums.length - 2; i++) {
+      const a = sorted[i]
+      if(i>0 && a===sorted[i-1]) continue
+      let left = i + 1
+      let right = nums.length - 1
+      for (; left < nums.length - 1; left++) {
+          const b = sorted[left]
+          if (left > i + 1 && b === sorted[left-1]) continue
+          while (right > left && sorted[right] + a + b > 0) {
+              right--
+          }
+          if(left === right) break
+          if (sorted[right] + a + b === 0) threeSumRes.push( [a, b,sorted[right]])
       }
-      Object.is
-    }
   }
   return threeSumRes
 }
