@@ -7,7 +7,7 @@
 // @lc code=start
 function threeSum(nums: number[]): number[][] {
   const threeSumRes: number[][] = []
-  const sorted = nums.sort()
+  const sorted = nums.sort((a,b)=> a-b)
   for(let i=0; i<nums.length; i++){
     const a = sorted[i]
     let left = i+1 
