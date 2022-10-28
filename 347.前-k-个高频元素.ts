@@ -6,7 +6,9 @@
 
 // @lc code=start
 function topKFrequent(nums: number[], k: number): number[] {
-  
+  const cntMap = new Map<number, number>()
+  const topKnums = new Array(k)
+  const 
 };
 // @lc code=end
 
