@@ -1,4 +1,4 @@
-#leetcode 刷题笔记
+
 
 ## 1.二叉树
 
@@ -9,9 +9,9 @@
 假设来到当前节点 cur，开始时 cur 来到头节点位置
 
 - 如果 cur 没有左孩子，cur向右移动(cur = cur.right)
-- 如果 cur 有左孩子，找到左子树上**最右**的节点 mostRight
-  - a.如果 mostRight 的右指针指向空，让其指向 cur， 然后 cur 向左移动(cur = cur.left)
-  - b.如果 mostRight 的右指针指向 cur，让其指向 null， 然后 cur 向右移动(cur = cur.right)
+- 如果 cur 有左孩子，找到左子树上**最右**的节点 mostRight 
+   - a.如果 mostRight 的右指针指向空，让其指向 cur， 然后 cur 向左移动(cur = cur.left)
+   - b.如果 mostRight 的右指针指向 cur，让其指向 null， 然后 cur 向右移动(cur = cur.right)
 - cur 为空时遍历停止
 
 #### 前序遍历
@@ -57,8 +57,10 @@ public List<Integer> preorderTraversal(TreeNode root) {
 
 #### 中序遍历
 
-- 对于没有左子树的节点只到达一次，直接打印
-- 对于有左子树的节点会到达两次，第二次到达时打印
+-  对于没有左子树的节点只到达一次，直接打印 
+-  对于有左子树的节点会到达两次，第二次到达时打印 
+
+ 
 
 #### 后序遍历
 
@@ -129,6 +131,7 @@ public List<Integer> inorderTraversal(TreeNode root) {
 2迭代
 
 stack 辅助
+
 
 ### 层序遍历
 
@@ -221,11 +224,8 @@ class Solution {
 
 **return 用&&连接两个dfs**
 
-### 将有序数组转换为平衡二叉树
 
-给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
-
-高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
 ```java
 class Solution {
@@ -242,16 +242,9 @@ class Solution {
 }
 ```
 
+
+
 ### [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
-
-给定一个二叉搜索树的根节点 `root` ，和一个整数 `k` ，请你设计一个算法查找其中第 `k` 个最小元素（从 1 开始计数）。
-
-![](https://assets.leetcode.com/uploads/2021/01/28/kthtree1.jpg#crop=0&crop=0&crop=1&crop=1&id=HUTfY&originHeight=301&originWidth=212&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-
-```
-输入：root = [3,1,4,null,2], k = 1
-输出：1
-```
 
 ```java
 class Solution {
@@ -259,7 +252,7 @@ class Solution {
         int cnt = 0;
         Deque<TreeNode> stack = new LinkedList<>();
         while(root!= null || !stack.isEmpty()){
-    
+        
             while(root!=null){
                 stack.push(root);
                 root= root.left;
@@ -276,19 +269,9 @@ class Solution {
 }
 ```
 
+
+
 ### [236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
-
-给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
-
-百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
-
-示例 1：
-
-![](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png#crop=0&crop=0&crop=1&crop=1&id=Atvql&originHeight=190&originWidth=200&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-
-输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
-输出：3
-解释：节点 5 和节点 1 的最近公共祖先是节点 3 。
 
 ```java
 class Solution {
@@ -302,6 +285,313 @@ class Solution {
         return root;
     }
 }
+```
+
+### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
+```ts
+function allPathsSourceTarget(graph: number[][]): number[][] {
+    const path = []
+    const ans = [] 
+    
+    const dfs = (x: number) => {
+        path.push(x)
+        if(x === graph.length-1){
+            ans.push(path.slice())//复制一个path
+        }
+        for(const next of graph[x]){
+            dfs(next)
+        }
+        path.pop()//把节点删掉
+    }
+
+    dfs(0)
+    return ans
+};
+```
+
+//优化版,next指针简化连接过程
+```ts
+
+function connect(root: Node | null): Node | null {
+  if (root === null) return root
+  let levelLeft = root
+  while(levelLeft.left != null){
+    let head = levelLeft
+    while(head !=null){
+      head.left.next = head.right
+      if(head.next)
+        head.right.next = head.next.left
+      head = head.next
+    }
+    levelLeft = levelLeft.left
+  }
+  return root
+}
+```
+
+## 1.1图
+### 存储方式
+1.邻接表
+```ts
+const graph = [
+0 [4,3,1],
+1 [3,2,4],
+2 [3],
+3 [4],
+4 []
+]
+```
+
+2.邻接矩阵
+```ts
+//若有权则存储具体值
+const graph = [
+[0,1,0,1,1]
+[0,0,1,1,1]
+[0,0,0,1,0]
+[0,0,0,0,1]
+[0,0,0,0,0]
+]
+```
+优劣：
+邻接表占用空间少，但无法快速判断节点是否相邻，需要遍历
+邻接矩阵占用空间多，可快速判断
+
+*PS：在常规的算法题中，邻接表的使用会更频繁一些，主要是因为操作起来较为简单，但这不意味着邻接矩阵应该被轻视。矩阵是一个强有力的数学工具，图的一些隐晦性质可以借助精妙的矩阵运算展现出来。*
+
+### 图的遍历
+用visited记录节点状态
+1 为在路径上，搜索未完成，
+-1 为已搜索完的
+0 为还未搜索s
+```ts
+function traverseGraph(graph: number[][], num: number) {
+  const visited: number[]  = [] 
+  
+  const dfs = (x: number) => {
+	  //前序位置
+      visited[x] = 1
+      for(const nighbor of graph[x]){
+          dfs(next)
+      }
+      //后序位置
+      visited[x] = -1
+  }
+
+  for(let i=0; i<num; i++){
+	  dfs(i)
+  }
+  
+};
+```
+#### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
+类型：图的遍历
+```typescript
+function allPathsSourceTarget(graph: number[][]): number[][] {
+  const path: number[] = []
+  const ans: number[][]  = [] 
+  
+  const dfs = (x: number) => {
+      path.push(x)
+      if(x === graph.length-1){
+          ans.push(path.slice())
+      }
+      for(const nighbor of graph[x]){
+          dfs(next)
+      }
+      path.pop()
+  }
+
+  dfs(0)
+  return ans
+};
+```
+
+### 环检测
+#### [207. 课程表](https://leetcode.cn/problems/course-schedule/)
+1.DFS
+```ts
+const buildGraph = (numCourses: number, prerequisites: number[][]){
+	for (let i = 0; i < numCourses; i++) {
+        graph.push([])
+    }
+    for (const req of prerequisites) {
+        graph[req[1]].push(req[0])
+    }
+}
+
+
+function canFinish(numCourses: number, prerequisites: number[][]): boolean {
+
+//构建图的邻接表
+  const graph: number[][] = buildGraph(numCourses: number, prerequisites: number[][])
+  
+// 借助一个标志列表 visited，用于判断每个节点 i （课程）的状态：
+// 未被 DFS 访问：i == 0；
+// 已被其他节点启动的 DFS 访问：i == -1；
+// 已被当前节点启动的 DFS 访问：i == 1。
+  const visited = new Array(numCourses).fill(0)
+  
+  const dfs = (num: number)=>{
+    if(visited[num] === 1) return false
+    if(visited[num] === -1) return true
+    visited[num] = 1
+    for(const nighbor of graph[num]){
+      if(!dfs(nighbor)) return false
+    }
+    visited[num] = -1
+    return true
+  }
+  
+  for(let i=0; i<numCourses; i++){
+    if(!dfs(i)) return false
+  }
+  return true
+};
+```
+
+2.BFS
+用一个数组记录入度
+将入度为0的压入队列
+```java
+public int[] findOrder(int numCourses, int[][] prerequisites) {
+    // 建图，和环检测算法相同
+    List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+    // 计算入度，和环检测算法相同
+    int[] indegree = new int[numCourses];
+    for (int[] edge : prerequisites) {
+        int from = edge[1], to = edge[0];
+        indegree[to]++;
+    }
+
+    // 根据入度初始化队列中的节点，和环检测算法相同
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < numCourses; i++) {
+        if (indegree[i] == 0) {
+            q.offer(i);
+        }
+    }
+
+    // 记录拓扑排序结果
+    int[] res = new int[numCourses];
+    // 记录遍历节点的顺序（索引）
+    int count = 0;
+    // 开始执行 BFS 算法
+    while (!q.isEmpty()) {
+        int cur = q.poll();
+        // 弹出节点的顺序即为拓扑排序结果
+        res[count] = cur;
+        count++;
+        for (int next : graph[cur]) {
+            indegree[next]--;
+            if (indegree[next] == 0) {
+                q.offer(next);
+            }
+        }
+    }
+
+    if (count != numCourses) {
+        // 存在环，拓扑排序不存在
+        return new int[]{};
+    }
+    
+    return res;
+}
+}
+```
+
+
+### 拓扑排序
+#### [210. 课程表 II](https://leetcode.cn/problems/course-schedule-ii/)
+```ts
+function findOrder(numCourses: number, prerequisites: number[][]): number[] {
+
+	//buildGraph函数见上文
+    const graph: number[][] = buildGraph(numCourses: number, prerequisites: number[][])
+    
+    const path = []
+    const visited = []
+    let cycle = false
+    const dfs = (num: number) => {
+        if(visited[num] === -1) return
+        if(visited[num] === 1) {
+            cycle = true
+            return 
+        }
+        visited[num] = 1
+        for (const neighbor of graph[num]){
+            dfs(neighbor)
+        }
+        visited[num] = -1
+        path.push(num)
+    }
+    for(let i=0; i<numCourses; i++){
+        dfs(i)
+    }
+    return cycle ? [] : path.reverse()
+};
+```
+
+### 最小生成树
+#### Prim
+
+##### [1584. 连接所有点的最小费用](https://leetcode.cn/problems/min-cost-to-connect-all-points/)
+```ts
+function minCostConnectPoints(points: number[][]): number {
+  const len = points.length
+  const graph = new Array(len)
+
+  //构建图
+  for(let i=0; i<len; i++){
+    graph[i] = new Array(len)
+  }
+  for (let i = 0; i < len; i++) {
+    for (let j = i+1; j < len; j++) {
+        const dis =
+          Math.abs(points[i][0] - points[j][0]) +
+          Math.abs(points[i][1] - points[j][1])
+        graph[i][j] = dis
+        graph[j][i] = dis
+    }
+  }
+  
+	//定义找边的函数
+  function searchLowcost(from: number){
+    for(let i=1;i<graph.length; i++){
+      if(lowcost[i]!=0 && graph[from][i] < lowcost[i]){
+        lowcost[i] = graph[from][i]
+        //preAdj[i] = from
+      }
+    }
+  }
+  let res =0 
+  //这道题只用算路径长度，不用记录节点，如果要记录节点需加一个数组preAdj 记录前一个节点index
+  //也可让 lowcost: number[index, distance]
+  const lowcost: number[] = new Array(len).fill(Number.MAX_VALUE)
+  //const preAdj = new Array(len).fill(0)
+	
+  searchLowcost(0)
+  lowcost[0] = 0
+
+  // 剩余n - 1个节点未加入到Vnew，遍历
+  for(let i=1; i<len; i++){
+    let minIdx = -1
+    let minDis = Number.MAX_VALUE
+    for(let j=1; j<len; j++){
+    //从当前的边中找到最小的
+      if(lowcost[j]===0) continue
+      if(lowcost[j]<minDis){
+        minDis = lowcost[j]
+        minIdx = j
+      }
+    }
+    lowcost[minIdx] = 0
+    res += minDis
+
+    searchLowcost(minIdx)
+  }
+  return res
+};
 ```
 
 ## 2.动态规划
@@ -331,6 +621,25 @@ class Solution {
     }
 }
 ```
+
+### [55. 跳跃游戏](https://leetcode.cn/problems/jump-game/)
+```ts
+function canJump(nums: number[]): boolean {
+  
+  let n = nums.length
+  let  rightmost = 0
+  for(let i=0; i<n; i++)
+      if (i <= rightmost)
+          rightmost = Math.max(rightmost, i + nums[i])
+          if (rightmost >= n - 1)
+              return true
+  return false
+
+
+};
+```
+
+难度中等2045收藏分享切换为英文接收动态反馈
 
 ### 剑指 Offer 60. n 个骰子的点数
 
@@ -369,6 +678,33 @@ class Solution {
 }
 ```
 
+### [198. 打家劫舍](https://leetcode.cn/problems/house-robber/)
+//思路
+  //1.偷第k间， 不能偷k-1， 最大为前k-2加上第k间
+  //2.不偷第k间， 最大为k-1
+  //dp[i] = Max(dp[i-2] + nums[i], dp[i-1])
+```typescript
+function rob(nums: number[]): number {
+	//思路
+  //1.偷第k间， 不能偷k-1， 最大为前k-2加上第k间
+  //2.不偷第k间， 最大为k-1
+  //dp[i] = Max(dp[i-2] + nums[i], dp[i-1])
+  const len = nums.length
+  if(len <=1 ){
+    return nums[0]
+  }
+  if(len <=2 ){
+    return Math.max(nums[0], nums[1])
+  }
+  const dp: number[] = new Array(nums.length)
+  dp[0] = nums[0]
+  dp[1] = Math.max(nums[0], nums[1])
+  for(let i=2; i<len; i++){
+    dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1])
+  }
+  return dp[len-1]
+};
+```
 ### [300. 最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
 
 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
@@ -662,12 +998,47 @@ class Solution {
 }
 ```
 
-### [147. 对链表进行插入排序](https://leetcode.cn/problems/insertion-sort-list/)
+### [75. 颜色分类](https://leetcode.cn/problems/sort-colors/)
+```ts
+/**
+ Do not return anything, modify nums in-place instead.
+ */
+function sortColors(nums: number[]): void {
+  let left = 0
+  let right = 0
+  // 2 0 2 1 1 0
+  // 0 2 2 1 1 0
+  // 0 1 2 2 1 0
+  // 0 1 1 2 2 0 
+  // 0 0 1 2 2 1
+  for(let i=0; i<nums.length; i++){
+  
+  if(nums[i]===1){
+      const num = nums[right]
+      nums[right] = 1
+      nums[i] = num
+      right++
+    }else if(nums[i] === 0){
+      const num = nums[left]
+      nums[left] = 0
+      nums[i] = num
+      if(nums[i]===1){//把1的换回去
+        nums[i] = nums[right]
+        nums[right] = 1
+      }
+      left++
+      right++
+      
+    }
+    
+  } 
+};
+```
 
+### [147. 对链表进行插入排序](https://leetcode.cn/problems/insertion-sort-list/)
 时间复杂度 N(n2)
 空间复杂度 N(1)
 思路：在左端维护一个有序数组，并记录最后一个节点
-
 ```javascript
 /**
  * Definition for singly-linked list.
@@ -710,7 +1081,6 @@ var insertionSortList = function(head) {
 ```
 
 ### [148. 排序链表](https://leetcode-cn.com/problems/sort-list/)
-
 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
 示例 1：
@@ -719,6 +1089,7 @@ var insertionSortList = function(head) {
 
 时间复杂度：O(n \log n)O(nlogn)，其中 nn 是链表的长度。
 空间复杂度：O(\log n)O(logn)，其中 nn 是链表的长度。空间复杂度主要取决于递归调用的栈空间。
+
 
 ```java
 class Solution {
@@ -779,6 +1150,26 @@ class Solution {
     }
 }
 ```
+
+### [2. 两数相加](https://leetcode.cn/problems/add-two-numbers/)
+```ts
+function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+  const ans  = new ListNode()
+  let cur  = ans
+  let cnt = 0
+  while(l1 !=null || l2!=null){
+	//如果为节点空则记录值为0
+    const n1 = l1 ? l1.val : 0
+    const n2 = l2 ? l2.val : 0
+    cur.next = new ListNode((n1+n2+cnt)%10)
+    cnt = Math.floor((n1+n2+cnt)/10)
+    if(l1) l1 = l1.next
+    if(l2) l2 = l2.next
+    cur = cur.next
+  }
+  if(cnt>0) cur.next = new ListNode(cnt)
+  return ans.next
+};```
 
 ### 138.复制带随机指针的链表
 
@@ -859,7 +1250,7 @@ public boolean hasCycle(ListNode head) {
             if(fast == slow){
                 return true;
             }
-    
+        
         }
         return false;
     }
@@ -1206,7 +1597,7 @@ class Solution {
             if(s.isMirror){
                 String str = s.substring(i,s.length);
             }
-    
+        
 
         }
     }
@@ -1260,12 +1651,102 @@ class Solution {
 }
 ```
 
+### [387. 字符串中的第一个唯一字符](https://leetcode.cn/problems/first-unique-character-in-a-string/)
+```typescript
+function firstUniqChar(s: string): number {
+  //第一次遍历存到哈希表中，如果重复值改为-1， 未重复值为索引
+  const position = new Map();
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (position.has(ch)) {
+            position.set(ch, -1);
+        } else {
+            position.set(ch, i);
+        }
+    }
+    let first = n;
+    for (let pos of position.values()) {
+        if (pos !== -1 && pos < first) {
+            first = pos;
+        }
+    }
+    if (first === n) {
+        first = -1;
+    }
+    return first;
+
+  }
+```
+### [1694. 重新格式化电话号码](https://leetcode.cn/problems/reformat-phone-number/)
+1.用silce分割，每次在结尾加上 '-'
+```ts
+function reformatNumber(number: string): string {
+  const processedNum = number.replace(/[- ]/g, '')
+  
+  let ans: string = ''
+  let i = 0
+  for (i = 0; i < processedNum.length - 4; i += 3) {
+    ans = ans + processedNum.slice(i, i+3) + '-'
+  }
+let x = processedNum.length-i
+  if (x === 3) {
+    ans = ans + processedNum.slice(i, i+3) 
+  } else {
+    if(x === 4){
+        ans = ans + processedNum.slice(i, i+2) + '-' + processedNum.slice(i+2, i+4)
+    }else{
+        ans = ans + processedNum.slice(i, i+2)
+    }
+  }
+  return ans
+}```
+2.将每段字符串存入数组， 最后用join('-')连接
+```ts
+function reformatNumber(number: string): string {
+    const s: string = number.replace(/[- ]/g, ''), 
+    n: number = s.length, 
+    ans: Array<string> = []
+    let idx: number = 0
+    for (; idx < n - 4; idx += 3) {
+        ans.push(s.substr(idx, 3))
+    }
+    if (idx == n - 4) {
+        ans.push(s.substr(idx, 2))
+        idx += 2
+    }
+    ans.push(s.substring(idx, n))
+    return ans.join("-")
+};
+```
+
+### [1790. 仅执行一次字符串交换能否使两个字符串相等](https://leetcode.cn/problems/check-if-one-string-swap-can-make-strings-equal/)
+```ts
+function areAlmostEqual(s1: string, s2: string): boolean {
+   const n = s1.length;
+    const diff = [];
+    for (let i = 0; i < n; ++i) {
+        if (s1[i] !== s2[i]) {
+            if (diff.length >= 2) {
+                return false;
+            }
+            diff.push(i);
+        }
+    }
+    if (diff.length === 0) {
+        return true;
+    }
+    if (diff.length !== 2) {
+        return false;
+    }
+    return s1[diff[0]] === s2[diff[1]] && s1[diff[1]] === s2[diff[0]];
+};
+```
+
 ## 7.哈希与映射
 
 ### [171. Excel 表列序号](https://leetcode-cn.com/problems/excel-sheet-column-number/)
 
-给你一个字符串 columnTitle ，表示 Excel 表格中的列名称。返回 该列名称对应的列序号 。
-
+给你一个字符串 columnTitle ，表示 Excel 表格中的列名称。
 例如：
 
 A -> 1
@@ -1322,29 +1803,49 @@ public int maxArea(int[] height) {
         return ans;
     }
 ```
+### [15. 三数之和](https://leetcode.cn/problems/3sum/)
+思路：先将数组排序保证a，b，c不重复
+传统做法 三重循环
+优化：当a固定 a + b1 + c1 = 0 a + b2 + c2 = 0
+b2  > b1  c2 < c1 
+所以b往右移动，c往左移动， 可使用双指针
+```ts
+function threeSum(nums: number[]): number[][] {
+    const threeSumRes: number[][] = []
+    const sorted = nums.sort((a: number,b: number)=> a-b)
+    for (let i = 0; i < nums.length - 2; i++) {
+        const a = sorted[i]
+        if(i>0 && a===sorted[i-1]) continue
+        let left = i + 1
+        let right = nums.length - 1
+        for (; left < nums.length - 1; left++) {
+            const b = sorted[left]
+            if (left > i + 1 && b === sorted[left-1]) continue
+            while (right > left && sorted[right] + a + b > 0) {
+                right--
+            }
+            if(left === right) break
+            if (sorted[right] + a + b === 0) threeSumRes.push( [a, b,sorted[right]])
+        }
+    }
+    return threeSumRes
+}
+```
+
 
 ### [26. 删除有序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
-
-给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。
-
-由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k 个元素应该保存最终结果。
-
-将最终结果插入 nums 的前 k 个位置后返回 k 。
-
-不要使用额外的空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
-
 ```java
 public int removeDuplicates(int[] nums) {
         if(nums.length==0 || nums.length==1) return nums.length;
         int cnt=1;
         int cur = nums[0];
         for(int i=1; i<nums.length;i++){
-    
+        
             if(nums[i]!=cur){
                 cur = nums[i];
                 cnt++;
                 nums[cnt-1]=nums[i];
-        
+            
             }
         }
         return cnt;
@@ -1353,27 +1854,7 @@ public int removeDuplicates(int[] nums) {
 
 ### [128. 最长连续序列](https://leetcode-cn.com/problems/longest-consecutive-sequence/)
 
-给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
-
-请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
-
-示例 1：
-
-```
-输入：nums = [100,4,200,1,3,2]
-输出：4
-```
-
-解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
-示例 2：
-
-```
-输入：nums = [0,3,7,2,5,8,4,6,0,1]
-输出：9
-```
-
 哈希表
-
 ```java
 public int longestConsecutive(int[] nums) {
         if(nums.length==0) return 0;
@@ -1403,9 +1884,7 @@ public int longestConsecutive(int[] nums) {
 ```
 
 ### [167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
-
 1.二分 O(nlogn)
-
 ```javascript
 var twoSum = function(numbers, target) {
     const ans = [-1,-1]
@@ -1426,9 +1905,7 @@ var twoSum = function(numbers, target) {
     return ans
 };
 ```
-
 2.双指针
-
 ```javascript
 var twoSum = function(numbers, target) {
     let left=0; right=numbers.length-1
@@ -1444,12 +1921,9 @@ var twoSum = function(numbers, target) {
     return [-1,-1]
 };
 ```
-
-### 350. 两个数组的交集 II
-
+### [350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
 哈希表
-
-```js
+```javascript
 var intersect = function (nums1, nums2) {
 		//用哈希表记录长度更小的数组
 		//默认nums1比nums2小,如果不是反着返回
@@ -1474,4 +1948,179 @@ var intersect = function (nums1, nums2) {
     })
     return intersection
 };
+```
+## 9.位运算
+| 符号 | 描述 | 运算规则 |
+| --- | --- | --- |
+| & | 与 | 两个位都为1时，结果才为1 |
+| &#124; | 或 | 两个位都为0时，结果才为0 |
+| ^ | 异或 | 两个位相同为0，相异为1 |
+| ~ | 取反 | 0变1，1变0 |
+| << | 左移 | 各二进位全部左移若干位，高位丢弃，低位补0 |
+| >> | 右移 | 各二进位全部右移若干位，对无符号数，高位补0，有符号数，各编译器处理方法不一样，有的补符号位（算术右移），有的补0（逻辑右移） |
+
+### [191. 位1的个数](https://leetcode.cn/problems/number-of-1-bits/)
+```typescript
+function hammingWeight(n: number): number {
+  let ans = 0
+  for(let i=0; i<32; i++){
+    ans += n & 1
+    n = n >> 1
+  }
+  return ans
+}
+```
+## 10.搜索
+### [剑指 Offer 12. 矩阵中的路径](https://leetcode.cn/problems/ju-zhen-zhong-de-lu-jing-lcof/)
+```typescript
+function exist(board: string[][], word: string): boolean {
+  const dfs = (k: number, board: string[][], row: number, col: number) => {
+    //搜索后将该位置改为空串， 或者用一个数组标记
+    if (row < 0 || row >= board.length || col < 0 || col >= board[0].length)
+      return false
+    if (board[row][col] != word.charAt(k)) return false
+    if (k === word.length - 1) return true
+
+    //搜索后将该位置改为空串,并用temp记录下字母
+    const temp = board[row][col]
+    board[row][col] = ''
+
+    const res =
+      dfs(k + 1, board, row - 1, col) ||
+      dfs(k + 1, board, row + 1, col) ||
+      dfs(k + 1, board, row, col - 1) ||
+      dfs(k + 1, board, row, col + 1)
+
+    //还原
+    board[row][col] = temp
+    return res
+  }
+
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      if (dfs(0, board, i, j)) return true
+    }
+  }
+  return false
+}
+```
+### 剑指offer [13. 机器人的运动范围](https://leetcode.cn/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+```typescript
+function movingCount(m: number, n: number, k: number): number {
+    let ans = 0
+    const marked: boolean[][] = []
+    for (let i = 0; i < m; i++) {
+        marked.push(new Array(n).fill(false))
+    }
+    const dfs = (i: number, j: number): void => {
+        let x = calculate(i) + calculate(j)
+        if (i < 0 || m < 0 || i >= m || j >= n || x > k || marked[i][j]) return
+
+        if (!marked[i][j] && x <= k) {
+            ans++
+            marked[i][j] = true
+        }
+        dfs(i + 1, j)
+        dfs(i, j + 1)
+    }
+    dfs(0, 0)
+    return ans
+};
+
+function calculate(i: number): number {
+    let res = 0
+    while (i > 0) {
+        res += i % 10
+        i = Math.floor(i / 10)
+    }
+    return res
+}
+```
+### [剑指 Offer 26. 树的子结构](https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/)
+```typescript
+function isSubStructure(A: TreeNode | null, B: TreeNode | null): boolean {
+  if (B === null || A=== null) return false
+  return compareTree(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B)
+}
+
+function compareTree(tree1: TreeNode | null, tree2: TreeNode | null): boolean{
+  if(tree2 ===  null) return true
+  if(tree1===null || tree1.val != tree2.val) return false
+  return compareTree(tree1.left, tree2.left) && compareTree(tree1.right, tree2.right)
+}
+```
+
+###  [剑指 Offer 27. 二叉树的镜像](https://leetcode.cn/problems/er-cha-shu-de-jing-xiang-lcof/)
+```ts
+function mirrorTree(root: TreeNode | null): TreeNode | null {
+  function swap(node: TreeNode | null): void{
+    if(!node) return
+    const temp = node.left
+    node.left = node.right
+    node.right = temp
+    swap(node.left)
+    swap(node.right)
+  }
+  
+  if(!root) return null
+  swap(root)
+  return root
+}
+```
+
+###  [剑指 Offer 28. 对称的二叉树](https://leetcode.cn/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+注意root为 *null* 时返回 true
+```ts
+function isSymmetric(root: TreeNode | null): boolean {
+    if(!root) return true
+    return checkNode(root?.left, root?.right)
+
+}
+function checkNode(a: TreeNode | null, b: TreeNode | null) {
+    if (a === null && b === null) return true
+    if (a === null || b === null) return false
+    if (a.val != b.val) return false
+
+    return checkNode(a.left, b.right) && checkNode(a.right, b.left)
+}
+```
+
+### [剑指 Offer 30. 包含min函数的栈](https://leetcode.cn/problems/bao-han-minhan-shu-de-zhan-lcof/)
+```ts
+class MinStack {
+  private arr: number[] = []
+  private minArr: number[] = []
+  constructor() {}
+
+  push(x: number): void {
+    const minArr = this.minArr
+    this.arr.push(x)
+    if (minArr.length > 0) {
+      if (x <= minArr[minArr.length - 1]) {
+        minArr.push(x)
+      }
+    } else {
+      this.minArr.push(x)
+    }
+  }
+
+  pop(): void {
+    if (this.arr.length >= 1) {
+      const minArr = this.minArr
+      const x = this.arr.pop()
+      if(x === minArr[minArr.length-1] ){
+          minArr.pop()
+      }
+    }
+  }
+
+  top(): number {
+    return this.arr[this.arr.length - 1]
+  }
+
+  min(): number {
+    return this.minArr[this.minArr.length - 1]
+  }
+}
 ```
