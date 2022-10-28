@@ -1129,6 +1129,60 @@ class Solution {
 }
 ```
 
+### [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
+快速排序变式
+```ts
+
+```
+
+利用priority queue(堆)
+```ts
+function heapify(arr: [number, number][], start: number, end: number) {
+  let father = start
+  let child = start * 2 + 1
+  while (child <= end) {
+    if (child + 1 <= end && arr[child][1] > arr[child + 1][1]) child++
+    if (arr[child][1] > arr[father][1]) return
+    else {
+      const temp = arr[father]
+      arr[father] = arr[child]
+      arr[child] = temp
+      father = child
+      child = father * 2 + 1
+    }
+  }
+}
+
+function heapSort(arr: [number, number][]) {
+  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
+    heapify(arr, i, arr.length - 1)
+  }
+}
+
+function topKFrequent(nums: number[], k: number): number[] {
+  const queue = new MinPriorityQueue()
+  const cntMap = new Map<number, number>()
+  const topKHeap: [number, number][] = []
+  for (const num of nums) {
+
+    cntMap.set(num, (cntMap.get(num) || 0) + 1)
+  }
+  for (const num of cntMap) {
+    // console.log('num cnt: ' + num)
+    if (topKHeap.length === k) {
+      if (num[1] > topKHeap[0][1]) {
+        topKHeap[0] = num
+        heapSort(topKHeap)
+      }
+    } else {
+      topKHeap.push(num)
+      if (topKHeap.length === k) heapSort(topKHeap)
+    }
+  }
+  return topKHeap.map((val) => val[0])
+}
+```
+
 ## 5.链表
 
 ### 例题
