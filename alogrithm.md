@@ -985,7 +985,6 @@ class Solution {
                 n--;
             }
         }
-  
       //如果nums1中数字已经用完，还需单独将nums2剩下的放入nums1
       //而nums2先用完，就不用管了
         if(m==0){
