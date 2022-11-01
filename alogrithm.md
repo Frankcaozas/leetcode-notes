@@ -963,6 +963,45 @@ int[] array = {4,3,2,5,7,1,0,9,1};
 mergeSort(array,0,array.length-1);
 ```
 
+### 堆排序
+```ts
+function swap(nums: number[], a: number, b: number) {
+  const temp = nums[a]
+  nums[a] = nums[b]
+  nums[b] = temp
+}
+
+//形成最大堆
+function heapify(nums: number[], start: number, end: number) {
+  let father = start
+  let child = father * 2 + 1
+  while (child <= end){
+    if (child + 1 <= end && nums[child] < nums[child + 1]) child++
+    if(nums[father]> nums[child]) {
+      return
+    }else{
+      swap(nums, father, child)
+      father = child
+      child = father*2+1
+    }
+  }
+}
+
+function heapSort(nums: number[]) {
+  const n = nums.length
+  //从最后一个有子节点的父节点开始heapify
+  for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+    heapify(nums, i, n - 1)
+  }
+  //将最上面的节点交换到最后，排除这个节点重新heapify
+  for (let i = n - 1; i > 0; i--) {
+    swap(nums, 0, i)
+    heapify(nums, 0, i - 1)
+  }
+}
+heapsort(nums)
+```
+
 ### 例题：
 
 ### 合并两个有序数组
@@ -1129,7 +1168,12 @@ class Solution {
 ```
 
 ### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+1.快速排序
+```ts
 
+```
+2.堆排序 
+略。。。
 ### [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 快速排序变式
 ```ts
