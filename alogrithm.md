@@ -1167,6 +1167,33 @@ class Solution {
 }
 ```
 
+### [162. 寻找峰值](https://leetcode.cn/problems/find-peak-element/)
+1暴力
+```ts
+
+function findPeakElement(nums: number[]): number {
+  let i = 0
+  for(i=0; i<nums.length-1; i++){
+    if(nums[i]>nums[i+1]) return i
+  }
+  return i
+};
+```
+2.二分 log n
+```ts
+function findPeakElement(nums: number[]): number {
+  let left=0, right = nums.length-1
+  while(left<right){
+    const mid= Math.floor((left+right)/2)
+    if(nums[mid]>nums[mid+1]){
+      right--
+    }else{
+      left++
+    }
+  }
+  return left
+};
+```
 ### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 1.快速排序
 ```ts
