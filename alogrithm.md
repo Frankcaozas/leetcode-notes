@@ -871,6 +871,39 @@ public class Solution extends VersionControl {
 }
 ```
 
+
+### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+两次二分， 先求左边界，再求有边界
+求边界时 mid = Math.floor((left + right) / 2)+1
+防止死循环
+因为Math.floor((left + right) / 2)向下取整
+```ts
+function searchRange(nums: number[], target: number): number[] {
+  let left = 0, right = nums.length - 1
+  let mid = Math.floor((left + right) / 2)
+  while (left < right) {
+    mid = Math.floor((left + right) / 2)
+    if (nums[mid] < target) {
+      left = mid + 1
+    } else {
+      right = mid
+    }
+  }
+  if(left>=0 && nums[left] !== target) return [-1,-1]
+  const l = left
+  left = 0
+  right = nums.length - 1
+  while (left < right) {
+    mid = Math.floor((left + right) / 2)+1
+    if (nums[mid] <= target) {
+      left = mid 
+    } else {
+      right = mid -1 
+    }
+  }
+  return [l, right]
+};
+```
 ## 4.排序
 
 ![](https://pic.leetcode-cn.com/1629483637-tmENTT-Picture2.png#crop=0&crop=0&crop=1&crop=1&id=uHfOC&originHeight=1007&originWidth=3262&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
