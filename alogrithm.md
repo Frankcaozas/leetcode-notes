@@ -1069,6 +1069,30 @@ class Solution {
 }
 ```
 
+### [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+```ts
+function merge(intervals: number[][]): number[][] {
+  intervals.sort((a, b) => {
+    return a[0] - b[0]
+  })
+  const merged = []
+  for (const interval of intervals) {
+    if (merged.length === 0) {
+      merged.push(interval)
+      continue
+    }
+    const last = merged[merged.length - 1]
+    if (interval[0] <= last[1]) {
+      merged.pop()
+      merged.push([last[0], Math.max(interval[1], last[1])])
+    } else {
+      merged.push(interval)
+    }
+  }
+  return merged
+};
+```
+
 ### [75. 颜色分类](https://leetcode.cn/problems/sort-colors/)
 ```ts
 /**
