@@ -224,7 +224,40 @@ class Solution {
 
 **return 用&&连接两个dfs**
 
-
+### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
+层序遍历变式
+```ts
+function zigzagLevelOrder(root: TreeNode | null): number[][] {
+  if (root === null) return []
+  const queue: TreeNode[] = [root]
+  const ans = []
+  let fromLeft = true
+  while (queue.length>0) {
+    let level = []
+    
+    //必须这样写，不然length会变!!!!
+    const size = queue.length 
+    
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift()
+      if (!fromLeft) {
+        level.unshift(node.val)
+      } else {
+        level.push(node.val)
+      }
+      if (node.left !==null) {
+        queue.push(node.left)
+      }
+      if (node.right !==null) {
+        queue.push(node.right)
+      }
+    }
+    ans.push(level)
+    fromLeft = !fromLeft
+  }
+  return ans
+};
+```
 ### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
 ```java
@@ -731,25 +764,41 @@ public int lengthOfLIS(int[] nums) {
 ```
 
 动态规划+二分查找 O(nlogn)
-
+[10,9,2,5,3,7,101,18]
 ```java
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[] tails = new int[nums.length];
-        int res = 0;
-        for(int num : nums) {
-            int i = 0, j = res;
-            while(i < j) {
-                int m = (i + j) / 2;
-                if(tails[m] < num) i = m + 1;
-                else j = m;
+        int n = nums.length;
+        int[] tail = new int[n];
+        tail[0] = 0;
+        int len = 0;
+        for(int i=0; i<n; i++){
+            int num = nums[i];
+            int left = 0;
+            int right = len;
+            while(left < right){
+                int m = (left+right)/2;
+                if(tail[m] >= num){
+                    right = m;
+                }else{
+                    left = m+1;
+                }
             }
-            tails[i] = num;
-            if(res == j) res++;
+            tail[left] = num;
+            if(right==len) len++;
         }
-        return res;
+        return len;
     }
 }
+// nums                  tails
+// [10,9,2,5,3,7,1,18]  [10,0,0,0,0,0,0,0]
+// [10,9,2,5,3,7,1,18]  [9,0,0,0,0,0,0,0]
+// [10,9,2,5,3,7,1,18]  [2,3,7,0,0,0,0,0]
+// [10,9,2,5,3,7,1,18]  [2,3,7,0,0,0,0,0]
+每次更新len长度的最后一个数字（尽可能小）
+用二分找tails最左侧>=num的位置（index）并更新
+如果找不到（num比所有的tail里的值都大）index=right（最长子序列长度）
+此时长度+1
 ```
 
 ### [322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
