@@ -946,10 +946,37 @@ public class Solution extends VersionControl {
 }
 ```
 
+### [33. 搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
+```ts
+function search(nums: number[], target: number): number {
+  let left = 0, right = nums.length-1
+  while(left<=right){
+    const mid = Math.floor((left+right)/2)
+    if(nums[mid]===target){
+      return mid
+    }
+    //[left, mid]是有序的
+    if(nums[left]<nums[mid]){
+      if(target>= nums[left] && target<= nums[mid]){
+        right = mid-1
+      }else{
+        left = mid+1
+      }
+    }else{//[mid+1, right]有序
+      if(target>= nums[mid+1] && target<=nums[right]){
+        left = mid+1
+      }else{
+        right = mid-1
+      }
+    }
+  }
+  return -1
+};
+```
 
 ### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
 两次二分， 先求左边界，再求有边界
-求边界时 mid = Math.floor((left + right) / 2)+1
+求右边界时 mid = Math.floor((left + right) / 2)+1
 防止死循环
 因为Math.floor((left + right) / 2)向下取整
 ```ts
