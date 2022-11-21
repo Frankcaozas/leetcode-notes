@@ -27,4 +27,19 @@ function generateParenthesis(n: number): string[] {
   }
   return dp[n]
 }
+
+//递归
+function generateParenthesis2(n: number): string[] {
+  const dfs = (n: number): string[]=>{
+    if(n===1) return ['()']
+    const set = new Set<string>()
+    for(const str of generateParenthesis2(n-1)){
+      for(let i=0; i<2*n-2;i++){
+        set.add(str.substring(0,i)+'()'+str.substring(i+1, str.length))
+      }
+    }
+    return [...set]
+  }
+  return dfs(n)
+}
 // @lc code=end
