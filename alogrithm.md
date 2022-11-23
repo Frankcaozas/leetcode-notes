@@ -2113,6 +2113,40 @@ class Solution {
 }
 ```
 
+### [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/)
+```ts
+class LRUCache {
+  map: Map<number, any>
+  constructor(private capacity: number) {
+    this.map = new Map()
+  }
+
+  get(key: number): number {
+    const val = this.map.get(key)
+    if (val !== undefined) {
+      this.map.delete(key)
+      this.map.set(key, val)
+      return val
+    } else {
+      return -1
+    }
+  }
+
+  put(key: number, value: number): void {
+    const val = this.map.get(key)
+    if (val !== undefined) {
+      this.map.delete(key)
+      this.map.set(key, value)
+    }
+    this.map.set(key, value)
+    if (this.map.size > this.capacity) {
+      this.map.delete(this.map.keys().next().value)
+    }
+  }
+}
+```
+
+
 ## 8.数组
 
 ### [11. 盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/)
