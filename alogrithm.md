@@ -258,6 +258,9 @@ function zigzagLevelOrder(root: TreeNode | null): number[][] {
   return ans
 };
 ```
+
+
+
 ### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
 ```java
@@ -302,6 +305,56 @@ class Solution {
 }
 ```
 
+### [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+```ts
+function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
+  //根据preorder不能确定树的结构，因为不确定根节点左边有几个，右边有几个
+  //可根据inorder(中序算出左右各有几个)
+  // map [[9,0],[3,1],[15,2],[20,3],[7,4]]
+  //preorder第一个必为根节点
+  const inorderMap = new Map() //根据preorderRoot的值去找inorderRoot在inorder数组的index
+
+  function dfs(
+    preorder: number[],
+    inorder: number[],
+    preLeft: number,
+    preRight: number,
+    inLeft: number,
+    inRight: number
+  ): TreeNode | null {
+    if (preLeft > preRight) {
+      return null
+    }
+    const inorderRoot = inorderMap.get(preorder[preLeft])
+    const leftSize = inorderRoot - inLeft
+    const root = new TreeNode(preorder[preLeft])
+    //递归构造子节点
+    root.left = dfs(
+      preorder,
+      inorder,
+      preLeft + 1,
+      preLeft + leftSize,
+      inLeft,
+      inorderRoot - 1
+    )
+    root.right = dfs(
+      preorder,
+      inorder,
+      preLeft + leftSize + 1,
+      preRight,
+      inorderRoot + 1,
+      inRight
+    )
+    return root
+  }
+
+  const len = inorder.length
+  for (let i = 0; i < len; i++) {
+    inorderMap.set(inorder[i], i)
+  }
+  return dfs(preorder, inorder, 0, len - 1, 0, len - 1)
+}
+```
 
 
 ### [236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
