@@ -2400,7 +2400,7 @@ function hammingWeight(n: number): number {
   return ans
 }
 ```
-## 10.搜索
+## 10.搜索与回溯
 ### [剑指 Offer 12. 矩阵中的路径](https://leetcode.cn/problems/ju-zhen-zhong-de-lu-jing-lcof/)
 ```typescript
 function exist(board: string[][], word: string): boolean {
@@ -2555,9 +2555,6 @@ class MinStack {
 }
 ```
 
-
-## 11.回溯
-
 ### [46. 全排列](https://leetcode.cn/problems/permutations/)
 ```ts
 //不用遍历的原因： 空间复杂度高
@@ -2585,4 +2582,55 @@ function permute(nums: number[]): number[][] {
   backtrack(0)
   return ans
 }
+```
+
+### [78. 子集](https://leetcode.cn/problems/subsets/)
+虽然是类似的递归，但要与全排列区分（子集其实迭代更好写）
+```ts
+function subsets(nums: number[]): number[][] {
+  const set: number[] = []
+  const ans: number[][] = [[]]
+  const backtrack = (index: number) => {
+    if (index >= nums.length) return
+    for (let i = index; i < nums.length; i++) {
+        set.push(nums[i])
+        ans.push([...set])
+        backtrack(i+1)
+        set.pop()
+    }
+  }
+  backtrack(0)
+  return ans
+};
+```
+
+### [79. 单词搜索](https://leetcode.cn/problems/word-search/)
+```ts
+function exist(board: string[][], word: string): boolean {
+  const visted: boolean[][] = new Array(board.length)
+  for (let i = 0; i < board.length; i++) {
+    visted[i] = new Array(board[0].length).fill(false)
+  }
+
+  const dfs = (row: number, col: number, index: number) => {
+    if (index >= word.length) return true
+    if (row >= board.length || col >= board[0].length || row < 0 || col < 0 || visted[row][col]) return false
+    if (board[row][col] === word.charAt(index)) {
+      index++
+      visted[row][col] = true
+      const result = dfs(row + 1, col, index) || dfs(row, col + 1, index) || dfs(row - 1, col, index) || dfs(row, col - 1, index)
+      visted[row][col] = false
+      return result
+    }
+    return false
+  }
+  
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      const res = dfs(i, j, 0)
+      if (res) return true
+    }
+  }
+  return false
+};
 ```
