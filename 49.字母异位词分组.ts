@@ -6,24 +6,16 @@
 
 // @lc code=start
 function groupAnagrams(strs: string[]): string[][] {
-  const copyOfStrs = new Array(strs)
-  const ans = []
-  for(const str1 of copyOfStrs){
-    copyOfStrs.splice(copyOfStrs.indexOf(str1))
-    const list = [str1]
-    for(const str2 of copyOfStrs){
-      const set = new Set(str1)
-      for(const char of str1){
-        set.add(char)
-      }
-      if(set.size===str1.length){
-        list.push(str2)
-        copyOfStrs.splice(copyOfStrs.indexOf(str2))
-      }
+  const map = new Object();
+    for (let s of strs) {
+        const count = new Array(26).fill(0);
+        for (let c of s) {
+            count[c.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+        }
+        map[count.toString()] ? map[count.toString()].push(s) : map[count.toString()] = [s];
     }
-    ans.push(list)
-  }
-  return ans
+    return Object.values(map);
+
 };
 // @lc code=end
 

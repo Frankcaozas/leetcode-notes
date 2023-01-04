@@ -1908,6 +1908,35 @@ class Solution {
 }
 ```
 
+### [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+1.排序
+```ts
+function groupAnagrams(strs: string[]): string[][] {
+    const map = new Map();
+    for (let str of strs) {
+        let array = Array.from(str);
+        array.sort();
+        let key = array.toString();
+        let list = map.get(key) ? map.get(key) : new Array();
+        list.push(str);
+        map.set(key, list);
+    }
+    return Array.from(map.values());
+};```
+2.计数
+```ts
+function groupAnagrams(strs: string[]): string[][] {
+  const map = new Object();
+    for (let s of strs) {
+        const count = new Array(26).fill(0);
+        for (let c of s) {
+            count[c.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+        }
+        map[count.toString()] ? map[count.toString()].push(s) : map[count.toString()] = [s];
+    }
+    return Object.values(map);
+
+};```
 ### 125.验证回文串
 
 给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
