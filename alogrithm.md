@@ -2430,6 +2430,29 @@ var twoSum = function(numbers, target) {
     return [-1,-1]
 };
 ```
+
+### [334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/)
+```ts
+function increasingTriplet(nums: number[]): boolean {
+  const incArr = new Array(3)
+  let len = 0
+  for(let i=0; i<nums.length; i++){
+    const num = nums[i]
+    if(len === 0){
+      incArr[0] = num
+      len++
+    }else if(num>incArr[len-1]){
+      incArr[len] = num
+      len++
+    }else if(num<=incArr[0]){
+      incArr[0] = num
+    }else if(num<=incArr[1]){
+      incArr[1] = num
+    }
+    if(len === 3) return true
+  }
+  return false
+};```
 ### [350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
 哈希表
 ```javascript
