@@ -163,6 +163,16 @@ public void levelOrder(TreeNode tree) {
 }
 ```
 
+### 二叉搜索树
+
+https://www.hello-algo.com/chapter_tree/binary_search_tree/
+
+性质：
+1.二叉搜索树的中序遍历结果是从小到大有序的
+
+### AVL树
+https://www.hello-algo.com/chapter_tree/avl_tree/
+
 ### 104.[ 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
 
 给定一个二叉树，找出其最大深度。
@@ -2430,6 +2440,24 @@ var twoSum = function(numbers, target) {
     return [-1,-1]
 };
 ```
+
+### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
+
+```ts
+//双指针
+function moveZeroes(nums: number[]): void {
+    let left = 0
+    let right = 0
+    while(right<nums.length){
+        if(nums[right]!=0){
+            const temp = nums[right]
+            nums[right] = nums[left]
+            nums[left] = temp
+            left++
+        }
+        right++
+    }
+};```
 
 ### [334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/)
 ```ts
