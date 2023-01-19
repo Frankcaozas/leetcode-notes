@@ -2321,6 +2321,30 @@ public int removeDuplicates(int[] nums) {
     }
 ```
 
+### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+```ts
+function rotate(matrix: number[][]): void {
+    //先水平翻转
+    const len = matrix.length
+    for(let i=0; i<len; i++){
+        for(let j=0; j<Math.floor(len/2); j++){
+            const temp = matrix[i][len-j-1]
+            matrix[i][len-j-1] = matrix[i][j]
+            matrix[i][j] = temp
+            // console.log(matrix[i][j],matrix[i][len-j-1])
+        }
+    }
+    //再沿着左下到右上对角线翻转
+    for(let i=0; i<len-1; i++){
+        for(let j=0; j<len-i-1; j++){
+            const temp = matrix[len-j-1][len-i-1]
+            matrix[matrix.length-j-1][matrix.length-i-1] = matrix[i][j]
+            matrix[i][j] = temp
+            // console.log(matrix[i][j], matrix[len-j-1][len-i-1])
+        }
+    }
+};```
+
 ### [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
 ```ts
 //o(1)
