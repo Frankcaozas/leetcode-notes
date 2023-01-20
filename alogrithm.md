@@ -2086,6 +2086,17 @@ class Solution {
 }
 ```
 
+### [242.有效的字母异位词](https://leetcode.cn/problems/valid-anagram/)
+1.排序
+```ts
+
+var isAnagram = function(s, t) {
+	//将字符串转为数组： [...]
+	//而不是new Array(str) 这样结果是[str]
+    return s.length == t.length && [...s].sort().join('') === [...t].sort().join('')
+};
+```
+2.哈希表
 ### [387. 字符串中的第一个唯一字符](https://leetcode.cn/problems/first-unique-character-in-a-string/)
 ```typescript
 function firstUniqChar(s: string): number {
