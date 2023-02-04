@@ -1886,6 +1886,32 @@ public class Solution {
 }
 ```
 
+### [8. 字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
+```ts
+function myAtoi(s: string): number {
+    const trimStr = s.trim()
+    let index = 0
+    let sign = 1
+    let ans = 0
+    if (index < trimStr.length && (trimStr.charAt(index) === '-') || trimStr.charAt(index) === '+') {
+        sign = trimStr.charAt(index) === '-' ? -1 : 1
+        index++
+    }
+    let char = trimStr.charCodeAt(index)
+    while (index < trimStr.length && char >= '0'.charCodeAt(0) && char <= '9'.charCodeAt(0)) {
+        let num = char - '0'.charCodeAt(0)
+        
+        ans = ans * 10 + num
+        index++
+        char = trimStr.charCodeAt(index)
+    }
+    ans = ans * sign
+    ans = sign === 1 ? Math.min(ans, Math.pow(2, 31) - 1) : Math.max(ans, -Math.pow(2, 31));
+
+
+    return ans
+};```
+
 ### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
 
 编写一个函数来查找字符串数组中的最长公共前缀。
