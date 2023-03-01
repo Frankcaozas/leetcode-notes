@@ -1910,7 +1910,8 @@ function myAtoi(s: string): number {
 
 
     return ans
-};```
+};
+```
 
 ### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
 
@@ -1942,6 +1943,36 @@ class Solution {
         return strs[0];
     }
 }
+```
+
+### [38. 外观数列](https://leetcode.cn/problems/count-and-say/)
+```ts
+function countAndSay(n: number): string {
+    if(n===1) return '1'
+    let lastChar = '-' 
+    let index = 0
+    const preStr = countAndSay(n-1)
+    // console.log(preStr)
+    let lastCount = 0
+    let result = ''
+    while(index < preStr.length){
+        const char = preStr.charAt(index)
+        if(index === 0 ) {
+            lastChar = char
+        }
+        if(char !== lastChar){
+            result += lastCount.toString() + lastChar
+            lastChar = char
+            lastCount = 1
+        }else{
+            lastCount++
+        }
+        index++
+    }
+    // console.log(lastChar, lastCount)
+    result += lastCount + lastChar
+    return result
+};
 ```
 
 ### [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
@@ -2825,3 +2856,42 @@ function exist(board: string[][], word: string): boolean {
   return false
 };
 ```
+
+## 11.设计
+
+### [297. 二叉树的序列化与反序列化](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/)
+```ts
+function serialize(root: TreeNode | null): string {
+    let str = ''
+    const dfs = (root: TreeNode) => {
+        if (root === null) {
+            str += 'none,'
+            return
+        }
+        str += root.val.toString() + ','
+        dfs(root.left)
+        dfs(root.right)
+    }
+    dfs(root)
+    return str
+};
+
+/*
+ * Decodes your encoded data to tree.
+ */
+function deserialize(data: string): TreeNode | null {
+    const nodes = data.split(',')
+    const dfs = () => {
+        if(nodes[0] === 'none'){
+            nodes.shift()
+            return null
+        }
+        const root = new TreeNode(parseInt(nodes[0]))
+        nodes.shift()
+        root.left = dfs()
+        root.right = dfs()
+        return root
+    }
+    return dfs()
+};
+ ```
