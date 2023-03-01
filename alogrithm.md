@@ -2895,3 +2895,31 @@ function deserialize(data: string): TreeNode | null {
     return dfs()
 };
  ```
+
+### [384. 打乱数组](https://leetcode.cn/problems/shuffle-an-array/)
+```ts
+class Solution {
+    origin: number[]
+    constructor(private nums: number[]) {
+        this.origin = nums
+    }
+
+    reset(): number[] {
+        return this.origin.slice()
+    }
+
+    shuffle(): number[] {
+        const len = this.nums.length
+        const set = new Set()
+        const shuffleArr = []
+        while (shuffleArr.length < this.nums.length) {
+            const random = Math.floor(Math.random() * len)
+            if(!set.has(random)  ){
+                shuffleArr.push(this.nums[random])
+                set.add(random)
+            }
+        }
+        return shuffleArr
+    }
+}
+```
