@@ -2923,3 +2923,65 @@ class Solution {
     }
 }
 ```
+
+## 12.其他
+
+### [169. 多数元素](https://leetcode.cn/problems/majority-element/)
+
+```ts
+function majorityElement(nums: number[]): number {
+    let most = nums[0]
+    let cnt = 1
+    for(let i=1; i<nums.length; i++){
+        if(cnt === 0){
+            cnt = 1
+            most = nums[i]
+        }
+        else if(most === nums[i]){
+            cnt ++
+        }else{
+            cnt--
+        }
+    }
+    return most
+};
+```
+
+### [380. O(1) 时间插入、删除和获取随机元素](https://leetcode.cn/problems/insert-delete-getrandom-o1/)
+
+结合数组与map的特性
+```ts
+class RandomizedSet {
+    map: Map<number, number>
+    arr: number[]
+    constructor() {
+        this.map = new Map()
+        this.arr = []
+    }
+
+    insert(val: number): boolean {
+        if(this.map.has(val)) return false
+        this.map.set(val, this.arr.length)
+        this.arr.push(val)
+        return true
+    }
+
+    remove(val: number): boolean { 
+        if(!this.map.has(val)) return false
+        //将数组最后一个值与当前值交换， 并把末位数字新的index存入Map
+        const index = this.map.get(val)
+        const temp = this.arr[this.arr.length-1]
+        this.arr[this.arr.length-1] = this.arr[index]
+        this.arr[index] = temp
+        this.arr.pop()
+        this.map.set(temp, index)
+        this.map.delete(val)
+        return true
+    }
+
+    getRandom(): number {
+        const index = Math.floor(Math.random()*this.map.size)
+        return this.arr[index]
+    }
+}
+```
