@@ -2549,7 +2549,8 @@ function moveZeroes(nums: number[]): void {
         }
         right++
     }
-};```
+};
+```
 
 ### [334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/)
 ```ts
@@ -2572,7 +2573,56 @@ function increasingTriplet(nums: number[]): boolean {
     if(len === 3) return true
   }
   return false
-};```
+};
+```
+
+### [349. 两个数组的交集](https://leetcode.cn/problems/intersection-of-two-arrays/)
+
+1 排序+双指针
+```ts
+function intersection(nums1: number[], nums2: number[]): number[] {
+    const sort1 = nums1.sort((a,b)=>a-b)
+    const sort2 = nums2.sort((a,b)=>a-b)
+    const intersec = []
+    let index1 = 0, index2 = 0
+    while (index1 < sort1.length && index2 < sort2.length) {
+        if (sort1[index1] < sort2[index2]) {
+            index1++
+        } else if (sort1[index1] > sort2[index2]) {
+            index2++
+        } else {
+            sort1[index1] === sort2[index2]
+            if (intersec[intersec.length - 1] !== sort1[index1])
+                intersec.push(sort1[index1])
+            index1++
+            index2++
+        }
+    }
+    return intersec
+};
+```
+2 set
+```ts
+function intersection(nums1: number[], nums2: number[]): number[] {
+    const set1 = new Set(nums1)
+    const set2 = new Set(nums2)
+    const setIntersection = (set1: Set<number>, set2: Set<number>)=>{
+        // default: set1.size > set2.size
+        if(set1.size < set2.size){
+            return setIntersection(set2, set1)
+        }
+        const intersec = []
+        set2.forEach((val)=>{ //遍历小的set， 看大的set中是否有
+            if(set1.has(val)){
+                intersec.push(val)
+            }
+        })
+        return intersec
+    }
+    return setIntersection(set1, set2)
+};
+```
+
 ### [350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
 哈希表
 ```javascript
@@ -2925,6 +2975,18 @@ class Solution {
 ```
 
 ## 12.其他
+
+### [50. Pow(x, n)](https://leetcode.cn/problems/powx-n/)
+```ts
+function myPow(x: number, n: number): number {
+    const compute = (x: number, n: number)=>{
+        if(n === 0) return 1
+        const a = compute(x, Math.floor(n/2))
+        return n%2 === 0 ? a * a : a* a*x
+    }
+    return n <0 ?  1/compute(x, -n) : compute(x, n)
+};
+```
 
 ### [169. 多数元素](https://leetcode.cn/problems/majority-element/)
 
