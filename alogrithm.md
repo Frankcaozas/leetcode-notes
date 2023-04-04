@@ -369,18 +369,19 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 
 ### [236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
-```java
-class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root==null || root==p || root==q) return root;
-        TreeNode left =  lowestCommonAncestor(root.left,p,q);
-        TreeNode right = lowestCommonAncestor(root.right,p,q);
-        if(left==null && right==null) return null;
-        if(right==null) return left;
-        if(left==null) return right;
-        return root;
+```ts
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+	const dfs = (root: TreeNode | null)=>{
+        if(!root ) return root
+        if(root.val === p.val || root.val ===  q.val) return root
+        const left = dfs(root.left)
+        const right = dfs(root.right)
+        if(left === null) return right
+        if(right ===null) return left
+        return root
     }
-}
+    return dfs(root)
+};
 ```
 
 ### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
@@ -910,28 +911,6 @@ class Solution {
 
 ### [322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
 
-给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
-
-计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
-
-你可以认为每种硬币的数量是无限的。
-
-示例 1：
-
-输入：coins = [1, 2, 5], amount = 11
-输出：3
-解释：11 = 5 + 5 + 1
-示例 2：
-
-输入：coins = [2], amount = 3
-输出：-1
-示例 3：
-
-输入：coins = [1], amount = 0
-输出：0
-
-注意amount为0时
-
 ```java
 public class Solution {
     public int coinChange(int[] coins, int amount) {
@@ -1181,41 +1160,44 @@ mergeSort(array,0,array.length-1);
 
 ### 堆排序
 ```ts
-function swap(nums: number[], a: number, b: number) {
-  const temp = nums[a]
-  nums[a] = nums[b]
-  nums[b] = temp
-}
-
-//形成最大堆
-function heapify(nums: number[], start: number, end: number) {
-  let father = start
-  let child = father * 2 + 1
-  while (child <= end){
-    if (child + 1 <= end && nums[child] < nums[child + 1]) child++
-    if(nums[father]> nums[child]) {
-      return
-    }else{
-      swap(nums, father, child)
-      father = child
-      child = father*2+1
+function heapify(arr, start, end) {
+    //大顶堆
+    var child = start * 2 + 1;
+    var father = start;
+    while (child <= end) {
+        if (child + 1 <= end && arr[child] < arr[child + 1])
+            child += 1;
+        if (arr[child] < arr[father]) {
+            return;
+        }
+        else {
+            swap(arr, child, father);
+            father = child;
+            child = father * 2 + 1;
+        }
     }
-  }
+}
+function buildHeap(arr) {
+    for (var i = Math.floor((arr.length - 1) / 2); i >= 0; i--) { //最后一个父元素开始
+        heapify(arr, i, arr.length - 1);
+    }
+}
+function heapSort(arr) {
+    buildHeap(arr);
+    for (var i = arr.length - 1; i >= 0; i--) {
+        swap(arr, 0, i);
+        heapify(arr, 0, i - 1);
+    }
+    return arr
+}
+function swap(arr, start, end) {
+    var temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
 }
 
-function heapSort(nums: number[]) {
-  const n = nums.length
-  //从最后一个有子节点的父节点开始heapify
-  for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-    heapify(nums, i, n - 1)
-  }
-  //将最上面的节点交换到最后，排除这个节点重新heapify
-  for (let i = n - 1; i > 0; i--) {
-    swap(nums, 0, i)
-    heapify(nums, 0, i - 1)
-  }
-}
-heapsort(nums)
+console.log(heapSort([3,1,5,2,11,24]))
+console.log(heapSort([1,3,4,123,5,1,2,3]))
 ```
 
 ### 例题：
@@ -1434,6 +1416,25 @@ function findPeakElement(nums: number[]): number {
   return left
 };
 ```
+### [179. 最大数](https://leetcode.cn/problems/largest-number/)
+```ts
+function largestNumber(nums: number[]): string {
+    const compare = (a: number, b: number) => {
+        const sa = a.toString()
+        const sb = b.toString()
+        return  Number(sb + sa) -Number(sa + sb)
+    }
+    nums.sort(compare)
+    // console.log(nums)
+    let ans = ''
+    nums.forEach(num => {
+        ans += num.toString()
+    })
+    if(nums[0]===0) return '0'
+    return ans
+};
+```
+
 ### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 1.快速排序
 ```ts
@@ -1480,7 +1481,7 @@ function randomPartion(nums: number[], left: number, right: number) {
 }
 ```
 2.堆排序 
-略。。。
+略。。。https://leetcode.cn/problems/top-k-frequent-elements/
 ### [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 快速排序变式
 ```ts
@@ -1505,7 +1506,7 @@ function heapify(arr: [number, number][], start: number, end: number) {
   }
 }
 
-function heapSort(arr: [number, number][]) {
+function buildHeap(arr: [number, number][]) {
   for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
     heapify(arr, i, arr.length - 1)
   }
@@ -1524,11 +1525,11 @@ function topKFrequent(nums: number[], k: number): number[] {
     if (topKHeap.length === k) {
       if (num[1] > topKHeap[0][1]) {
         topKHeap[0] = num
-        heapSort(topKHeap)
+        heapify(topKHeap, 0 , topHeap.length-1)
       }
     } else {
       topKHeap.push(num)
-      if (topKHeap.length === k) heapSort(topKHeap)
+      if (topKHeap.length === k) buildHeap(topKHeap)
     }
   }
   return topKHeap.map((val) => val[0])
@@ -1575,7 +1576,8 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
   }
   if(cnt>0) cur.next = new ListNode(cnt)
   return ans.next
-};```
+};
+```
 
 ### 138.复制带随机指针的链表
 
@@ -1945,6 +1947,66 @@ class Solution {
 }
 ```
 
+### [32. 最长有效括号](https://leetcode.cn/problems/longest-valid-parentheses/)
+1 栈
+时间：O(n)
+空间：O(n)
+```ts
+function longestValidParentheses(s: string): number {
+    let maxLen = 0
+    const stack = [-1] // -1为没有被匹配的')'
+    for (let index = 0; index < s.length; index++) {
+        const c = s.charAt(index)
+        if (c === ')') {
+            stack.pop()
+            if (stack.length === 0) { // 说明该位置')'没有匹配
+                stack.push(index)
+            } else {
+                maxLen = Math.max(maxLen, index - (stack[stack.length - 1] ?? 0))
+            }
+        } else {
+            stack.push(index)
+        }
+    }
+    return maxLen
+};
+```
+2 dp
+时间：O(n)
+空间：O(n)
+```ts
+...
+```
+3.贪心 正向逆向结合
+```ts
+function longestValidParentheses(s: string): number {
+    let left = 0, right = 0
+    let maxLen = 0
+    Array.from(s).forEach(c => {
+        if (c === ')') right++
+        else left++
+        if (right > left) {
+            left = 0
+            right = 0
+        } else if (left === right)
+            maxLen = Math.max(maxLen, right * 2)
+    })
+    left = right = 0
+    
+    for (let i = s.length - 1; i >= 0; i--) {
+        const c = s.charAt(i)
+        if (c === ')') right++
+        else left++
+        if (left > right) {
+            left = 0
+            right = 0
+        } else if (left === right) {
+            maxLen = Math.max(maxLen, right * 2)
+        }
+    }
+    return maxLen
+};
+```
 ### [38. 外观数列](https://leetcode.cn/problems/count-and-say/)
 ```ts
 function countAndSay(n: number): string {
