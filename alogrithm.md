@@ -291,28 +291,23 @@ class Solution {
 
 
 ### [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
-
-```java
-class Solution {
-    public int kthSmallest(TreeNode root, int k) {
-        int cnt = 0;
-        Deque<TreeNode> stack = new LinkedList<>();
-        while(root!= null || !stack.isEmpty()){
-        
-            while(root!=null){
-                stack.push(root);
-                root= root.left;
-            }
-            root = stack.pop();
-            cnt++;
-            if(cnt==k){
-                return root.val;
-            }
-            root = root.right;
-        }
-        return root.val;
+利用stack
+```js
+function kthSmallest(root: TreeNode | null, k: number): number {
+  const stack = []
+  let cur = root
+  let cnt = 0
+  while (cur !== null || stack.length) {
+    while (cur !== null) {
+      stack.push(cur)
+      cur = cur.left
     }
-}
+    cur = stack.pop()
+    cnt++
+    if(cnt === k) return cur.val
+    cur = cur.right
+  }
+};
 ```
 
 ### [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
@@ -481,24 +476,68 @@ function traverseGraph(graph: number[][], num: number) {
   
 };
 ```
+#### [1971. 寻找图中是否存在路径](https://leetcode.cn/problems/find-if-path-exists-in-graph/)
+bfs
+```ts
+function validPath(n: number, edges: number[][], source: number, destination: number): boolean {
+  const adj = Array.from(new Array(n),()=>new Array())
+  for (const edge of edges) {
+    adj[edge[0]].push(edge[1])
+    adj[edge[1]].push(edge[0])
+  }
+  const queue = [source]
+  const visited = new Array(n).fill(false)
+  while (queue.length) {
+    const i = queue.pop()
+    if (i === destination) return true
+    for (const neighbor of adj[i]) {
+      if (!visited[neighbor]) {
+        queue.push(neighbor)
+        visited[neighbor] = true
+      }
+    }
+  }
+  return false
+};```
+dfs将queue改为stack即可
+```ts
+function validPath(n: number, edges: number[][], source: number, destination: number): boolean {
+  const adj = Array.from(new Array(n),()=>new Array())
+  for (const edge of edges) {
+    adj[edge[0]].push(edge[1])
+    adj[edge[1]].push(edge[0])
+  }
+  const stack = [source]
+  const visited = new Array(n).fill(false)
+  while (stack.length) {
+    const i = stack.pop()
+    if (i === destination) return true
+    for (const neighbor of adj[i]) {
+      if (!visited[neighbor]) {
+        stack.push(neighbor)
+        visited[neighbor] = true
+      }
+    }
+  }
+  return false
+};```
 #### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
 类型：图的遍历
 ```typescript
 function allPathsSourceTarget(graph: number[][]): number[][] {
-  const path: number[] = []
-  const ans: number[][]  = [] 
-  
-  const dfs = (x: number) => {
-      path.push(x)
-      if(x === graph.length-1){
-          ans.push(path.slice())
-      }
-      for(const nighbor of graph[x]){
-          dfs(next)
-      }
-      path.pop()
+  const stack = []
+  const ans = []
+  const n = graph.length-1
+  const dfs = (num: number) => {
+    stack.push(num)
+    if (num === n) {
+      ans.push(stack.slice())
+    }
+    for (const nb of graph[num]) {
+      dfs(nb)
+    }
+    stack.pop()
   }
-
   dfs(0)
   return ans
 };
@@ -873,31 +912,29 @@ public int lengthOfLIS(int[] nums) {
 
 动态规划+二分查找 O(nlogn)
 [10,9,2,5,3,7,101,18]
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int[] tail = new int[n];
-        tail[0] = 0;
-        int len = 0;
-        for(int i=0; i<n; i++){
-            int num = nums[i];
-            int left = 0;
-            int right = len;
-            while(left < right){
-                int m = (left+right)/2;
-                if(tail[m] >= num){
-                    right = m;
-                }else{
-                    left = m+1;
-                }
-            }
-            tail[left] = num;
-            if(right==len) len++;
-        }
-        return len;
+```ts
+function lengthOfLIS(nums: number[]): number {
+  const dp = []
+  let len = 1
+  dp.push(nums[0])
+  for (let i = 1; i < nums.length; i++) {
+    const num = nums[i]
+    if (num > dp[len - 1]) {
+      len++
+      dp.push(num)
+    } else {
+      let l = 0, r = len - 1
+      while (l < r) {
+        const mid = Math.floor((l + r) / 2)
+        if (dp[mid] < num) l = mid + 1
+        else r = mid
+      }
+      dp[l] = num
     }
-}
+    // console.log(dp, num)
+  }
+  return len
+};
 // nums                  tails
 // [10,9,2,5,3,7,1,18]  [10,0,0,0,0,0,0,0]
 // [10,9,2,5,3,7,1,18]  [9,0,0,0,0,0,0,0]
@@ -1116,46 +1153,32 @@ void bubbleSort(int[] nums) {
 
 非自适应： 对于任意输入数据，归并排序的时间复杂度皆相同。
 
-```java
-void mergeSort(int[] array, int left , int right){
- 	//终止条件
-  if(left>=right){
-    return;
-  }
-  
-  int mid = (left+right)/2;
-  mergeSort(array,left,mid);
-  mergeSort(array,mid+1,right);
-  
-  //分配临时数组空间
-  int[] temp = new int[right-left+1];
-  //复制过去
-  for(int i=left; i<=temp.length; i++){
-    temp[i-left] = array[i];
-  }
-  
-  //合并
-  int l=0;
-  int r=mid-left+1;
-  for(int i=0; i<temp.length; i++){
-    if(l == mid-left+1){
-      array[i] = temp[r];
-      r++;
-    }else if(r == right-left+1){
-    	array[i] = temp[l];
-      l++;
-    }else if(temp[l]<temp[r]){
-      array[i] = temp[l];
-      l++;
-    }else{
-      array[i] == temp[r];
-      r++;
+```js
+function mergeSort(arr, l, r) {
+  if(l>=r) return
+  const mid = Math.floor((l + r) / 2)
+  mergeSort(arr, l, mid)
+  mergeSort(arr, mid + 1, r)
+  const temp = arr.slice(l, r + 1)
+  //silce后start为0, mid=mid-l ,end=r-l
+  let i = 0, j = mid-l+1
+  for(let k=l; k<=r; k++){
+    if(i===mid-l+1){
+      arr[k] = temp[j]
+      j++
+    }else if(j===r-l+1 || temp[i]<= temp[j]){
+      arr[k] = temp[i]
+      i++
+    }else if(temp[i]>temp[j]){
+      arr[k] = temp[j]
+      j++
     }
   }
 }
 
-int[] array = {4,3,2,5,7,1,0,9,1};
-mergeSort(array,0,array.length-1);
+const arr = [3, 4, 1, 5, 2, 1]
+mergeSort(arr, 0, arr.length-1)
+console.log(arr);
 ```
 
 ### 堆排序
@@ -1199,7 +1222,34 @@ function swap(arr, start, end) {
 console.log(heapSort([3,1,5,2,11,24]))
 console.log(heapSort([1,3,4,123,5,1,2,3]))
 ```
+### 快速排序
+```js
+function quickSort(arr, l, r) {
+  if(l>=r) return 
+  const mid = partition(arr, l, r)
+  quickSort(arr, l, mid - 1)
+  quickSort(arr, mid + 1, r)
+}
 
+function partition(arr, l, r) {
+  let i = l,
+    j = r
+  while (i < j) {
+    while (i < j && arr[l] <= arr[j]) j--
+    while (i < j && arr[l] >= arr[i]) i++
+    swap(arr, i, j)
+  }
+  swap(arr, i, l)
+  return i
+}
+function swap(arr, a, b) {
+  const temp = arr[a]
+  arr[a] = arr[b]
+  arr[b] = temp
+}
+const arr = [2,3,4,2,1]
+quickSort(arr, 0, arr.length - 1)
+console.log(arr)```
 ### 例题：
 
 ### 合并两个有序数组
@@ -1822,19 +1872,38 @@ public int lengthOfLongestSubstring(String s) {
 ```
 
 ### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+中心向外扩展
+```ts
+function longestPalindrome(s: string): string {
+  const str = Array.from(s)
+  let start=0,end=0, len =0
+  for(let i=0; i<str.length; i++){
+    const [l1, r1] = expand(i, i)
+    const [l2, r2] = expand(i, i+1) 
+    if(r1-l1>len){
+      len = r1-l1
+      start = l1
+      end = r1
+    }
+    if(r2-l2>len){
+      len = r2-l2
+      start = l2
+      end = r2
+    }
+    // console.log(l1, r1, l2, r2, i)
+  }
+  return s.substring(start, end+1)
 
-给你一个字符串 s，找到 s 中最长的回文子串。
-
-示例 1：
-
-输入：s = "babad"
-输出："bab"
-解释："aba" 同样是符合题意的答案。
-示例 2：
-
-输入：s = "cbbd"
-输出："bb"
-
+  function expand(l: number, r: number){
+    while(l>=0 && r<s.length && str[l] === str[r]){
+      l--
+      r++
+    }
+    return [l+1, r-1]
+  }
+};
+```
+dp
 ```java
 public class Solution {
 
