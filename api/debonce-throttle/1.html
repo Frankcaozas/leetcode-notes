@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <button style="height: 30px; width: 30px"></button>
+  </body>
+  <script>
+    function debonce(fn, t) {
+      let timer
+      return function (...args) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn(...args)
+        }, t)
+      }
+    }
+    function throttle(fn, t) {
+      let timer
+      return function (...args) {
+        if (timer) return
+        timer = setTimeout(() => {
+          fn(...args)
+          console.log(timer);
+          timer = null
+        }, t)
+      }
+    }
+    const debonceclick = debonce(() => {
+      console.log('click')
+    }, 500)
+    const throttleClick = throttle(() => {
+      console.log('click')
+    }, 500)
+    const button = document.querySelector('button')
+    button.addEventListener('click', throttleClick)
+  </script>
+  <style></style>
+</html>
