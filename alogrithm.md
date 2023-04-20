@@ -1151,6 +1151,23 @@ function searchRange(nums: number[], target: number): number[] {
   return [l, right]
 };
 ```
+#### [69. x 的平方根](https://leetcode.cn/problems/sqrtx/)
+```ts
+function mySqrt(x: number): number {
+  let left = 0, right = x
+  let ans
+  while (left <= right) {
+    let mid = (left + right) >> 1
+    if (mid * mid > x) right = mid-1
+    else {
+      left = mid +1
+      ans = mid
+    }
+  }
+
+  return ans
+};
+```
 ## 4.排序
 
 ![](https://pic.leetcode-cn.com/1629483637-tmENTT-Picture2.png#crop=0&crop=0&crop=1&crop=1&id=uHfOC&originHeight=1007&originWidth=3262&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
