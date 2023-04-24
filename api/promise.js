@@ -67,11 +67,15 @@ const map = function (items, fn, concurrency = Infinity) {
   })
 }
 
-const now = Date.now()
-console.log('Start')
-map([1, 1, 1], (x) => sleep(x * 1000)).then((o) => {
-  console.log(o)
-  console.log(Date.now() - now, 'milliseconds')
-})
+// const now = Date.now()
+// console.log('Start')
+// map([1, 1, 1], (x) => sleep(x * 1000)).then((o) => {
+//   console.log(o)
+//   console.log(Date.now() - now, 'milliseconds')
+// })
 
-map([1, 2, 3], (x) => x * 3).then((o) => console.log(o))
+// map([1, 2, 3], (x) => x * 3).then((o) => console.log(o))
+
+function myRace(){
+  
+}

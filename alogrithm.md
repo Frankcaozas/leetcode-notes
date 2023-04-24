@@ -1,53 +1,5 @@
 
 
-### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
-1.快速排序
-```ts
-function findKthLargest(nums: number[], k: number): number {
-  return quikSlect(nums, 0, nums.length-1, nums.length-k)
-};
-
-function quikSlect(nums: number[], left: number, right: number, index: number){
-  const pivot = randomPartion(nums, left, right)
-  console.log(nums);
-  console.log(pivot)
-  if(pivot === index){
-    return nums[pivot]
-  }else if(pivot<index){
-    return quikSlect(nums, pivot+1, right, index)
-  }else{
-    return quikSlect(nums, left, pivot-1, index)
-  }
-}
-
-function swap(arr: number[], a: number, b: number) {
-  const temp = arr[a]
-  arr[a] = arr[b]
-  arr[b] = temp
-}
-
-function partion(nums: number[], left: number, right: number) {
-  let i = left-1
-  const pivot = nums[right]
-  for (let j = left; j < right ; j++) {
-    if (nums[j] < pivot) {
-      i++
-      swap(nums, i, j)
-    }
-  }
-  swap(nums, i+1, right)
-  return i+1
-}
-
-function randomPartion(nums: number[], left: number, right: number) {
-  const random = Math.floor(Math.random() * (right - left+1) +left)
-  swap(nums, random, right)
-  return partion(nums, left, right)
-}
-```
-2.堆排序 
-略。。。https://leetcode.cn/problems/top-k-frequent-elements/
-
 ## 1.二叉树
 
 ### 二叉树Morris遍历
@@ -426,7 +378,33 @@ function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: Tree
     return dfs(root)
 };
 ```
-
+#### [450. 删除二叉搜索树中的节点](https://leetcode.cn/problems/delete-node-in-a-bst/)
+迭代
+```ts
+```
+递归
+```ts
+function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
+  if (!root) return null
+  if (root.val > key) root.left = deleteNode(root.left, key)
+  else if (root.val < key) root.right = deleteNode(root.right, key)
+  else {
+    if (!root.right && !root.left) return null
+    if (!root.left) return root.right
+    if (!root.right) return root.left
+    let alt = root.right
+    while (alt.left) {
+      alt = alt.left
+    }
+    
+    root.right =  deleteNode(root.right, alt.val)
+    alt.right = root.right
+    alt.left = root.left
+    return alt
+  }
+  return root
+};
+```
 ### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
 ```ts
 function allPathsSourceTarget(graph: number[][]): number[][] {
@@ -869,41 +847,24 @@ function canJump(nums: number[]): boolean {
 
 难度中等2045收藏分享切换为英文接收动态反馈
 
-### 剑指 Offer 60. n 个骰子的点数
+###  [剑指 Offer 60. n个骰子的点数](https://leetcode.cn/problems/nge-tou-zi-de-dian-shu-lcof/)
 
-把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+难度中等548收藏分享切换为英文接收动态反馈
 
-你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
-
-示例 1:
-
-输入: 1
-输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
-示例 2:
-
-输入: 2
-输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
-
-```java
-class Solution {
-    public double[] dicesProbability(int n) {
-        double[] dp = new double[6];
-      	//初始化n=1边界情况
-        Arrays.fill(dp, 1.0 /6.0);
-  
-        for(int i=2; i<n+1; i++){
-            double[] temp = new double[5*i+1];
-            for(int j=0; j<dp.length; j++){
-                for(int k=0; k<6; k++){
-                    temp[j+k] +=  dp[j] / 6.0; 
-                }
-            }
-            dp = temp;
-          //第n个只和n-1有关，因此交替前进
-        }
-        return dp;
+```js
+function dicesProbability(n: number): number[] {
+  let dp = new Array(6).fill(1/6)
+  for(let i=2; i<=n; i++){
+    const temp = new Array(5*i+1).fill(0)
+    for(let j=0; j<dp.length; j++){
+      for(let k=1; k<=6; k++){
+        temp[j+k-1] += dp[j]*1/6
+      }
     }
-}
+    dp = temp
+  }
+  return dp
+};
 ```
 
 ### [198. 打家劫舍](https://leetcode.cn/problems/house-robber/)
@@ -933,6 +894,7 @@ function rob(nums: number[]): number {
   return dp[len-1]
 };
 ```
+
 ### [300. 最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
 
 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
@@ -1151,7 +1113,7 @@ function searchRange(nums: number[], target: number): number[] {
   return [l, right]
 };
 ```
-#### [69. x 的平方根](https://leetcode.cn/problems/sqrtx/)
+### [69. x 的平方根](https://leetcode.cn/problems/sqrtx/)
 ```ts
 function mySqrt(x: number): number {
   let left = 0, right = x
@@ -1168,6 +1130,42 @@ function mySqrt(x: number): number {
   return ans
 };
 ```
+
+### [153. 寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
+```ts
+function findMin(nums: number[]): number {
+  let l=0, r=nums.length-1
+  while(l<r){
+    const mid = l+Math.floor(r-l)
+    if(nums[mid]<nums[0]){
+      r = mid
+    }else{
+      l = mid+1
+    }
+  }
+  // console.log(l, r)
+  return nums[l] 
+};
+```
+### [154. 寻找旋转排序数组中的最小值 II](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/)
+上一题变式 重点 r--
+```ts
+function findMin(nums: number[]): number {
+  let l=0, r=nums.length-1
+  while(l<r){
+    const mid = l+Math.floor((r-l)/2)
+    if(nums[mid]<nums[r]){
+      r = mid
+    }else if(nums[mid]>nums[r]){
+      l = mid+1
+    }else{
+      r--
+    }
+  }
+  return nums[l] 
+};
+```
+
 ## 4.排序
 
 ![](https://pic.leetcode-cn.com/1629483637-tmENTT-Picture2.png#crop=0&crop=0&crop=1&crop=1&id=uHfOC&originHeight=1007&originWidth=3262&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
@@ -1550,6 +1548,54 @@ function largestNumber(nums: number[]): string {
 };
 ```
 
+### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+1.快速排序
+```ts
+function findKthLargest(nums: number[], k: number): number {
+  return quikSlect(nums, 0, nums.length-1, nums.length-k)
+};
+
+function quikSlect(nums: number[], left: number, right: number, index: number){
+  const pivot = randomPartion(nums, left, right)
+  console.log(nums);
+  console.log(pivot)
+  if(pivot === index){
+    return nums[pivot]
+  }else if(pivot<index){
+    return quikSlect(nums, pivot+1, right, index)
+  }else{
+    return quikSlect(nums, left, pivot-1, index)
+  }
+}
+
+function swap(arr: number[], a: number, b: number) {
+  const temp = arr[a]
+  arr[a] = arr[b]
+  arr[b] = temp
+}
+
+function partion(nums: number[], left: number, right: number) {
+  let i = left-1
+  const pivot = nums[right]
+  for (let j = left; j < right ; j++) {
+    if (nums[j] < pivot) {
+      i++
+      swap(nums, i, j)
+    }
+  }
+  swap(nums, i+1, right)
+  return i+1
+}
+
+function randomPartion(nums: number[], left: number, right: number) {
+  const random = Math.floor(Math.random() * (right - left+1) +left)
+  swap(nums, random, right)
+  return partion(nums, left, right)
+}
+```
+2.堆排序 
+略。。。https://leetcode.cn/problems/top-k-frequent-elements/
+
 ### [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 快速排序变式
 ```ts
@@ -1855,38 +1901,24 @@ int Idex_KMP(int[] next,String S,String str){
 ### 例题：
 
 ### [3. 无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
-
-给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
-
-示例 1:
-
-```
-输入: s = "abcabcbb"
-输出: 3 
-解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
-```
-
-```java
-//滑动窗口
-public int lengthOfLongestSubstring(String s) {
-        Set<Character> set = new HashSet<>();
-        char[] charArray = s.toCharArray();
-        int len = 0;
-        int rk = -1;//记录出现不同字母的指针
-        int n = charArray.length;
-        for(int i=0; i<n; i++){//固定左端点
-            if(i!=0){
-              //右移一次删除一个字母
-                set.remove(charArray[i-1]);
-            }
-            while(rk+1<n && !set.contains(charArray[rk+1])){
-                set.add(charArray[rk+1]);
-                rk++;
-            }
-            len = Math.max(len,rk-i+1);
-        }
-        return len;
+```ts
+function lengthOfLongestSubstring(s: string): number {
+  const set = new Set()
+  let i=0, r=0
+  let len = 0
+  while(i<=r && r<s.length){
+    const c = s.charAt(r)
+    if(!set.has(c)){
+      set.add(c)
+      len = Math.max(len, r-i+1)
+      r++
+    }else{
+      set.delete(s.charAt(i))
+      i++
     }
+  }
+  return len
+};
 ```
 
 ### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)

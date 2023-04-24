@@ -42,7 +42,7 @@ function calculator(str) {
       while (ops.length) {
         if (ops[ops.length - 1] !== '(') {
           calc(nums, ops)
-          console.log(nums, ops);
+          console.log(nums, ops)
         } else {
           ops.pop()
           break
@@ -61,9 +61,14 @@ function calculator(str) {
         nums.push(num)
       } else {
         //char是计算符号
-        if (i > 0 && (strArr[i - 1] === '(' || strArr[i - 1] === '+' || strArr[i - 1] === '-')) {
-          nums.push(0);
-      }
+        if (
+          i > 0 &&
+          (strArr[i - 1] === '(' ||
+            strArr[i - 1] === '+' ||
+            strArr[i - 1] === '-')
+        ) {
+          nums.push(0)
+        }
         while (ops.length && ops[ops.length - 1] !== '(') {
           const preOp = ops[ops.length - 1]
           if (map.get(preOp) >= map.get(char)) {
@@ -75,7 +80,7 @@ function calculator(str) {
         ops.push(char)
       }
     }
-    console.log(nums, ops);
+    console.log(nums, ops)
   }
 
   while (ops.length) calc(nums, ops)
