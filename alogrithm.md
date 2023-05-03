@@ -173,7 +173,8 @@ https://www.hello-algo.com/chapter_tree/binary_search_tree/
 ### AVL树
 https://www.hello-algo.com/chapter_tree/avl_tree/
 
-### 104.[ 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+### 104.[ 二叉树的最大深度]
+(https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
 
 给定一个二叉树，找出其最大深度。
 
@@ -234,7 +235,8 @@ class Solution {
 
 **return 用&&连接两个dfs**
 
-### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
+### [103. 二叉树的锯齿形层序遍历]
+(https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
 层序遍历变式
 ```ts
 function zigzagLevelOrder(root: TreeNode | null): number[][] {
@@ -271,26 +273,28 @@ function zigzagLevelOrder(root: TreeNode | null): number[][] {
 
 
 
-### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
+### [108. 将有序数组转换为二叉搜索树]
+(https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
-```java
-class Solution {
-    public TreeNode sortedArrayToBST(int[] nums) {
-        return dfs(0,nums.length-1, nums);
-    }
-    public TreeNode dfs(int left, int right, int[] nums){
-        if(left>right) return null;
-        TreeNode node = new TreeNode(nums[(left+right)/2]);
-        node.left = dfs(left,(left+right)/2-1,nums);
-        node.right = dfs((left+right)/2+1,right,nums);
-        return node;
-    }
-}
+```js
+function sortedArrayToBST(nums: number[]): TreeNode | null {
+  const build = (l,r)=>{
+    if(l>r) return null
+    const mid = Math.floor((l+r)/2)
+    const node= new TreeNode(nums[mid])
+    node.left=build(l, mid-1)
+    node.right = build(mid+1, r)
+    return node
+  }
+  return build(0, nums.length-1)
+};
 ```
 
+### [112. 路径总和]
+(https://leetcode.cn/problems/path-sum/)
 
-
-### [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+### [230. 二叉搜索树中第K小的元素]
+(https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
 利用stack
 ```js
 function kthSmallest(root: TreeNode | null, k: number): number {
@@ -310,7 +314,8 @@ function kthSmallest(root: TreeNode | null, k: number): number {
 };
 ```
 
-### [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+### [105. 从前序与中序遍历序列构造二叉树]
+(https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 ```ts
 function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
   //根据preorder不能确定树的结构，因为不确定根节点左边有几个，右边有几个
@@ -362,7 +367,8 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 ```
 
 
-### [236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+### [236. 二叉树的最近公共祖先]
+(https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 ```ts
 function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
@@ -378,9 +384,57 @@ function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: Tree
     return dfs(root)
 };
 ```
-#### [450. 删除二叉搜索树中的节点](https://leetcode.cn/problems/delete-node-in-a-bst/)
+### [450. 删除二叉搜索树中的节点]
+(https://leetcode.cn/problems/delete-node-in-a-bst/)
 迭代
 ```ts
+
+function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
+  let curNode = root
+  let parent = null
+  let direction: string
+  while (curNode && curNode.val !== key) {
+    parent = curNode
+    if (key < curNode.val) {
+      curNode = curNode.left
+      direction = 'left'
+    } else {
+      curNode = curNode.right
+      direction = 'right'
+    }
+
+  }
+  if (!curNode) return root
+  const left = curNode.left, right = curNode.right
+  if (!left && !right) curNode = null
+  else if (!left) {
+    curNode = curNode.right
+  }
+  else if (!right) {
+    curNode = curNode.left
+  } else {
+    let alt = curNode.right
+    let altParent = curNode
+    while (alt.left) {
+      altParent = alt
+      alt = alt.left
+    }
+    if (altParent.val === curNode.val) {
+      altParent.right = alt.right
+    } else {
+      altParent.left = alt.right
+    }
+    alt.left = curNode.left
+    alt.right = curNode.right
+    curNode = alt
+  }
+  if (!parent) {
+    return curNode
+  } else {
+    parent[direction] = curNode
+  }
+  return root
+};
 ```
 递归
 ```ts
@@ -405,7 +459,8 @@ function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
   return root
 };
 ```
-### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
+### [797. 所有可能的路径]
+(https://leetcode.cn/problems/all-paths-from-source-to-target/)
 ```ts
 function allPathsSourceTarget(graph: number[][]): number[][] {
     const path = []
@@ -502,7 +557,8 @@ function traverseGraph(graph: number[][], num: number) {
   
 };
 ```
-#### [1971. 寻找图中是否存在路径](https://leetcode.cn/problems/find-if-path-exists-in-graph/)
+#### [1971. 寻找图中是否存在路径]
+(https://leetcode.cn/problems/find-if-path-exists-in-graph/)
 bfs
 ```ts
 function validPath(n: number, edges: number[][], source: number, destination: number): boolean {
@@ -547,7 +603,8 @@ function validPath(n: number, edges: number[][], source: number, destination: nu
   }
   return false
 };```
-#### [797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/)
+#### [797. 所有可能的路径]
+(https://leetcode.cn/problems/all-paths-from-source-to-target/)
 类型：图的遍历
 ```typescript
 function allPathsSourceTarget(graph: number[][]): number[][] {
@@ -570,7 +627,8 @@ function allPathsSourceTarget(graph: number[][]): number[][] {
 ```
 
 ### 环检测
-#### [207. 课程表](https://leetcode.cn/problems/course-schedule/)
+#### [207. 课程表]
+(https://leetcode.cn/problems/course-schedule/)
 1.DFS
 ```ts
 const buildGraph = (numCourses: number, prerequisites: number[][]){
@@ -664,7 +722,8 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 
 ### 拓扑排序
-#### [210. 课程表 II](https://leetcode.cn/problems/course-schedule-ii/)
+#### [210. 课程表 II]
+(https://leetcode.cn/problems/course-schedule-ii/)
 ```ts
 function findOrder(numCourses: number, prerequisites: number[][]): number[] {
 
@@ -697,7 +756,8 @@ function findOrder(numCourses: number, prerequisites: number[][]): number[] {
 ### 最小生成树
 #### Prim
 
-##### [1584. 连接所有点的最小费用](https://leetcode.cn/problems/min-cost-to-connect-all-points/)
+##### [1584. 连接所有点的最小费用]
+(https://leetcode.cn/problems/min-cost-to-connect-all-points/)
 ```ts
 function minCostConnectPoints(points: number[][]): number {
   const len = points.length
@@ -768,7 +828,8 @@ function minCostConnectPoints(points: number[][]): number {
 
 ### 例题：
 
-### [22. 括号生成](https://leetcode.cn/problems/generate-parentheses/)
+### [22. 括号生成]
+(https://leetcode.cn/problems/generate-parentheses/)
 动态规划
 ```ts
 function generateParenthesis(n: number): string[] {
@@ -812,7 +873,8 @@ class Solution {
 }
 ```
 
-### [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
+### [53. 最大子数组和]
+(https://leetcode.cn/problems/maximum-subarray/)
 
 ```java
 class Solution {
@@ -892,6 +954,26 @@ function rob(nums: number[]): number {
     dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1])
   }
   return dp[len-1]
+};
+```
+
+### 213. 打家劫舍 II
+(https://leetcode.cn/problems/house-robber-ii/)
+```ts
+function rob(nums: number[]): number {
+  if(nums.length===0) return 0
+  if(nums.length===1) return nums[0]
+  function myRob(nums: number[]) {
+    let pre = 0, cur = 0
+    for (let i = 0; i < nums.length; i++) {
+      const sum = Math.max(cur, pre + nums[i])
+      pre = cur
+      cur = sum
+    }
+    return cur
+  }
+  //分为两段：0->length-2 1->length-1
+  return Math.max(myRob(nums.slice(0, nums.length - 1)), myRob(nums.slice(1, nums.length)))
 };
 ```
 
@@ -1312,16 +1394,33 @@ function swap(arr, a, b) {
 }
 const arr = [2,3,4,2,1]
 quickSort(arr, 0, arr.length - 1)
-console.log(arr)```
+console.log(arr)
+```
 ### 例题：
 
+### 剑指 Offer 40. 最小的k个数
+(https://leetcode.cn/problems/zui-xiao-de-kge-shu-lcof/)
+利用快排划分区域
+```ts
+function getLeastNumbers(arr: number[], k: number): number[] {
+  if(k>=arr.length) return arr
+  const quickSort = (l: number, r: number) => {
+    let i = l, j = r
+    while (i < j) {
+      while (i<j && arr[j] >= arr[l]) j--
+      while (i<j && arr[i] <= arr[l]) i++
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    [arr[i], arr[l]] = [arr[l], arr[i]]
+    if(i<k) return quickSort(i+1, r)
+    if(i>k) return quickSort(l, i-1)
+     return arr.slice(0, k)
+  }
+  return quickSort(0, arr.length-1)
+};
+```
+
 ### 合并两个有序数组
-
-给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。
-
-请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。
-
-注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。
 
 ```java
 class Solution {
@@ -1552,46 +1651,25 @@ function largestNumber(nums: number[]): string {
 1.快速排序
 ```ts
 function findKthLargest(nums: number[], k: number): number {
-  return quikSlect(nums, 0, nums.length-1, nums.length-k)
-};
+  function quickSort(l: number, r: number) {
+    if (l > r) return
+    const ro = Math.floor(l + Math.random() * (r - l + 1))
+    let i = l, j = r;
+     [nums[ro], nums[l]] = [nums[l], nums[ro]]
 
-function quikSlect(nums: number[], left: number, right: number, index: number){
-  const pivot = randomPartion(nums, left, right)
-  console.log(nums);
-  console.log(pivot)
-  if(pivot === index){
-    return nums[pivot]
-  }else if(pivot<index){
-    return quikSlect(nums, pivot+1, right, index)
-  }else{
-    return quikSlect(nums, left, pivot-1, index)
-  }
-}
-
-function swap(arr: number[], a: number, b: number) {
-  const temp = arr[a]
-  arr[a] = arr[b]
-  arr[b] = temp
-}
-
-function partion(nums: number[], left: number, right: number) {
-  let i = left-1
-  const pivot = nums[right]
-  for (let j = left; j < right ; j++) {
-    if (nums[j] < pivot) {
-      i++
-      swap(nums, i, j)
+    while (i < j) {
+      while (i < j && nums[j] >= nums[l]) j--
+      while (i < j && nums[i] <= nums[l]) i++
+      [nums[i], nums[j]] = [nums[j], nums[i]]
     }
+    [nums[i], nums[l]] = [nums[l], nums[i]]
+    // console.log(i)
+    if (i > nums.length - k) return quickSort(l, i-1)
+    else if (i < nums.length - k) return quickSort(i+1,r)
+    return nums[nums.length - k]
   }
-  swap(nums, i+1, right)
-  return i+1
-}
-
-function randomPartion(nums: number[], left: number, right: number) {
-  const random = Math.floor(Math.random() * (right - left+1) +left)
-  swap(nums, random, right)
-  return partion(nums, left, right)
-}
+  return quickSort(0, nums.length - 1)
+};
 ```
 2.堆排序 
 略。。。https://leetcode.cn/problems/top-k-frequent-elements/
@@ -1690,6 +1768,43 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
   }
   if(cnt>0) cur.next = new ListNode(cnt)
   return ans.next
+};
+```
+### [25. K 个一组翻转链表]
+(https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+```ts
+function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
+  const hair = new ListNode(0)
+  hair.next = head
+  let end = hair
+  let pre = hair
+  while (end !== null) {
+    for (let i = 0; i < k; i++) {
+      end = end.next
+      if (end === null) break
+    }
+    if (end === null) break
+    let start = pre.next
+    let next = end.next
+    end.next = null
+    pre.next = reverse(start)
+    start.next = next
+    pre = start
+    end = start
+  }
+  return hair.next
+  function reverse(head: ListNode) {
+    let pre = null
+    let cur = head
+    let next = null
+    while (cur) {
+      next = cur.next
+      cur.next = pre
+      pre = cur
+      cur = next
+    }
+    return pre
+  }
 };
 ```
 
@@ -2065,7 +2180,28 @@ class Solution {
     }
 }
 ```
-
+### 20. 有效的括号
+(https://leetcode.cn/problems/valid-parentheses/)
+```ts
+function isValid(s: string): boolean {
+  const map = new Map()
+    .set(')', '(')
+    .set('}', '{')
+    .set(']', '[')
+  const stack = []
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charAt(i)
+    if (map.has(c)) {
+      if (stack.length === 0 || stack[stack.length - 1] !== map.get(c)) return false
+      
+      stack.pop()
+    } else {
+      stack.push(c)
+    }  
+  }
+  return stack.length === 0
+};
+```
 ### [32. 最长有效括号](https://leetcode.cn/problems/longest-valid-parentheses/)
 1 栈
 时间：O(n)
@@ -2323,6 +2459,23 @@ class Solution {
     }
 }
 ```
+### [165. 比较版本号]
+(https://leetcode.cn/problems/compare-version-numbers/)
+```ts
+function compareVersion(version1: string, version2: string): number {
+  const v1 = version1.split('.')
+  const v2 = version2.split('.')
+
+  for (let i = 0; i < v1.length || i < v2.length; i++) {
+    let l = 0, r = 0
+    if (i < v1.length) l = Number(v1[i])
+    if (i < v2.length) r = Number(v2[i])
+    if (l < r) return -1
+    else if (l > r) return 1
+  }
+  return 0
+};
+```
 
 ### [242.有效的字母异位词](https://leetcode.cn/problems/valid-anagram/)
 1.排序
@@ -2361,7 +2514,7 @@ function firstUniqChar(s: string): number {
 
   }
 ```
-#### [647. 回文子串](https://leetcode.cn/problems/palindromic-substrings/)
+### [647. 回文子串](https://leetcode.cn/problems/palindromic-substrings/)
 ```ts
 function countSubstrings(s: string): number {
   let count = 0
@@ -2550,29 +2703,36 @@ b2  > b1  c2 < c1
 所以b往右移动，c往左移动， 可使用双指针
 ```ts
 function threeSum(nums: number[]): number[][] {
-    const threeSumRes: number[][] = []
-    const sorted = nums.sort((a: number,b: number)=> a-b)
-    for (let i = 0; i < nums.length - 2; i++) {
-        const a = sorted[i]
-        if(i>0 && a===sorted[i-1]) continue
-        let left = i + 1
-        let right = nums.length - 1
-        for (; left < nums.length - 1; left++) {
-            const b = sorted[left]
-            if (left > i + 1 && b === sorted[left-1]) continue
-            while (right > left && sorted[right] + a + b > 0) {
-                right--
-            }
-            if(left === right) break
-            if (sorted[right] + a + b === 0) threeSumRes.push( [a, b,sorted[right]])
-        }
+    const res = []
+  const numsort = nums.sort((a, b) => a - b)
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (i >= 1 && numsort[i] === numsort[i - 1]) continue
+    let j = i + 1, k = nums.length - 1
+    const target = - numsort[i]
+    while (j < k) {
+      const sum = numsort[j] + numsort[k]
+      if (sum === target) {
+        res.push([numsort[i], numsort[j], numsort[k]])
+        j++
+        k--
+        while (j < k && numsort[j] === numsort[j - 1]) j++
+        while (j > k && numsort[k] === numsort[k + 1]) k--
+      } else if (sum < target) {
+        j++
+        while (j < k && numsort[j] === numsort[j - 1]) j++
+      } else {
+        k--
+        while (j > k && numsort[k] === numsort[k + 1]) k--
+      }
     }
-    return threeSumRes
+  }
+  return res
 }
 ```
 
 
-### [26. 删除有序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
+### 26. 删除有序数组中的重复项
+(https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
 ```java
 public int removeDuplicates(int[] nums) {
         if(nums.length==0 || nums.length==1) return nums.length;
@@ -2589,6 +2749,29 @@ public int removeDuplicates(int[] nums) {
         }
         return cnt;
     }
+```
+### 42. 接雨水
+(https://leetcode.cn/problems/trapping-rain-water/)
+```ts
+function trap(height: number[]): number {
+  let maxLeft = 0
+  let maxRight = 0
+  let l = 0, r = height.length - 1
+  let count = 0
+  while (l < r) {
+    maxLeft = Math.max(maxLeft, height[l])
+    maxRight = Math.max(maxRight, height[r])
+    if (maxLeft <= maxRight) {
+      count += maxLeft - height[l]
+      l++
+    } else {
+      count += maxRight - height[r]
+      r--
+    }
+  }
+  return count
+};
+
 ```
 
 ### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
@@ -2613,7 +2796,41 @@ function rotate(matrix: number[][]): void {
             // console.log(matrix[i][j], matrix[len-j-1][len-i-1])
         }
     }
-};```
+};
+```
+### [54. 螺旋矩阵]
+(https://leetcode.cn/problems/spiral-matrix/)
+```ts
+function spiralOrder(matrix: number[][]): number[] {
+  let top = 0 , right = matrix[0].length-1
+  let bottom = matrix.length-1,  left = 0
+  let count = (matrix.length) * (matrix[0].length)
+  const arr = []
+  while(count>0){
+    for(let i=left; i<=right; i++){
+      arr.push(matrix[top][i])
+    }
+    top++
+    if(top > bottom) break
+    for(let i=top; i<=bottom; i++){
+      arr.push(matrix[i][right])
+    }
+    right--
+    if(left > right) break
+    for(let i=right; i>=left; i--){
+      arr.push(matrix[bottom][i])
+    }
+    bottom--
+    if(top > bottom) break
+    for(let i=bottom; i>=top; i--){
+      arr.push(matrix[i][left])
+    }
+    left++
+    if(left > right) break
+  }
+  return arr
+};
+```
 
 ### [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
 ```ts
@@ -2663,6 +2880,29 @@ function setZeroes(matrix: number[][]): void {
     }
   }
 }
+```
+
+### [88. 合并两个有序数组]
+(https://leetcode.cn/problems/merge-sorted-array/)
+从后往前·
+```ts
+function merge(nums1: number[], m: number, nums2: number[], n: number): void {
+  while(m>0 && n>0){
+    if(nums1[m-1]>nums2[n-1]){
+      nums1[m+n-1] = nums1[m-1]
+      m--
+    }else{
+      nums1[m+n-1] = nums2[n-1]
+      n--
+    }
+  }
+  if(n>0){
+    while(n>0){
+      nums1[n-1] = nums2[n-1]
+      n--
+    }
+  }
+};
 ```
 
 ### [128. 最长连续序列](https://leetcode-cn.com/problems/longest-consecutive-sequence/)

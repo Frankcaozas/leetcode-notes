@@ -37,15 +37,29 @@
       <div class="line one-px"></div>
     </div>
     <script>
+      // // console.log(a)
+      // var a = 'a'
+      // // console.log(a)
+      // var foo = () => {
+      //   // var a = 'a1'
+      //   console.log(a)
+      // }
+      // foo()
       // console.log(a)
-      var a = 'a'
-      // console.log(a)
-      var foo = () => {
-        // var a = 'a1'
-        console.log(a)
-      }
-      foo()
-      console.log(a)
+      // window.b = 'a'
+      // var b = 'c'
+      // console.log(window.b)
+      // console.log(b)
+      setTimeout(() => {
+        console.log('time1')
+        Promise.resolve().then(()=>{
+          console.log('then')
+        })
+      });
+      setTimeout(() => {
+        console.log('time2')
+        
+      });
     </script>
   </body>
 </html>
