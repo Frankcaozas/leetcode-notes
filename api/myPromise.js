@@ -14,7 +14,7 @@ class myPromise {
         this.value = val
         this.state = 'fulfilled'
         this.resolveCallbacks.forEach(({fn, resolve:res, reject: rej}) => {
-          res(fn(this.value))
+          res(fn(this.value)) // 应该把fn放入微任务队列
         })
       })
     }
@@ -32,7 +32,7 @@ class myPromise {
     if (this.state === 'fulfilled') {
       const result = fn(this.value)
       // 需要返回一个 Promise
-      // 如果状态为 resolved，直接执行
+      // 如果状态为 resolved，直接执行（直接推入微任务队列）
       return myPromise.resolve(result)
     }
     if (this.state === 'pending') {
@@ -55,12 +55,14 @@ class myPromise {
 }
 
 myPromise.resolve(10)
-  .then((o) => o * 10)
-  .then((o) => o + 10)
+  .then((o) => console.log('p1'))
+  .then((o) => console.log('p2'))
   .then((o) => {
-    console.log(o)
+    console.log(1)
   })
-
-new myPromise((resolve, reject) => reject('Error')).catch((e) => {
-  console.log('Error', e)
-})
+myPromise.resolve().then(()=>{
+  console.log('promise 4')
+}).then(()=>console.log('pormise 5'))
+// new myPromise((resolve, reject) => reject('Error')).catch((e) => {
+//   console.log('Error', e)
+// })

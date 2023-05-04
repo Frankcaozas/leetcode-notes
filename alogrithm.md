@@ -828,51 +828,6 @@ function minCostConnectPoints(points: number[][]): number {
 
 ### 例题：
 
-### [22. 括号生成]
-(https://leetcode.cn/problems/generate-parentheses/)
-动态规划
-```ts
-function generateParenthesis(n: number): string[] {
-  //1 ()
-  //2 ()() (())
-  //3 ()()() (())() ()(()) (()()) ((()))
-  const dp: string[][] = new Array(n+1)
-  dp[0] = ['']
-  dp[1] = ['()']
-  for (let i = 2; i <= n; i++) {
-    const set = new Set<string>()
-    for (let j=0; j<i; j++) {
-      const leftList = dp[j]
-      const rightList = dp[i-1-j]
-      for(const str1 of leftList){
-        for(const str2 of rightList){
-          set.add('('+str1+')'+str2)
-        }
-      }
-    }
-    dp[i] = Array.from(set)
-  }
-  return dp[n]
-}
-```
-递归
-```java
-class Solution {
-    public List<String> generateParenthesis(int n) {
-        if (n == 1) {
-            return Arrays.asList("()");
-        }
-        Set<String> hs = new HashSet<>();
-        for (String s : generateParenthesis(n-1)) {
-            for (int i = 0; i < 2*n-2; i++) {
-                hs.add(s.substring(0,i) + "()" + s.substring(i,s.length()));
-            }
-        }
-        return new ArrayList(hs);
-    }
-}
-```
-
 ### [53. 最大子数组和]
 (https://leetcode.cn/problems/maximum-subarray/)
 
@@ -1553,14 +1508,6 @@ var insertionSortList = function(head) {
 ```
 
 ### [148. 排序链表](https://leetcode-cn.com/problems/sort-list/)
-给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
-
-示例 1：
-输入：head = [4,2,1,3]
-输出：[1,2,3,4]
-
-时间复杂度：O(n \log n)O(nlogn)，其中 nn 是链表的长度。
-空间复杂度：O(\log n)O(logn)，其中 nn 是链表的长度。空间复杂度主要取决于递归调用的栈空间。
 
 
 ```java
@@ -2014,27 +1961,6 @@ int Idex_KMP(int[] next,String S,String str){
 ```
 
 ### 例题：
-
-### [3. 无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
-```ts
-function lengthOfLongestSubstring(s: string): number {
-  const set = new Set()
-  let i=0, r=0
-  let len = 0
-  while(i<=r && r<s.length){
-    const c = s.charAt(r)
-    if(!set.has(c)){
-      set.add(c)
-      len = Math.max(len, r-i+1)
-      r++
-    }else{
-      set.delete(s.charAt(i))
-      i++
-    }
-  }
-  return len
-};
-```
 
 ### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
 中心向外扩展
@@ -3269,6 +3195,51 @@ class MinStack {
 }
 ```
 
+### [22. 括号生成]
+(https://leetcode.cn/problems/generate-parentheses/)
+动态规划
+```ts
+function generateParenthesis(n: number): string[] {
+  //1 ()
+  //2 ()() (())
+  //3 ()()() (())() ()(()) (()()) ((()))
+  const dp: string[][] = new Array(n+1)
+  dp[0] = ['']
+  dp[1] = ['()']
+  for (let i = 2; i <= n; i++) {
+    const set = new Set<string>()
+    for (let j=0; j<i; j++) {
+      const leftList = dp[j]
+      const rightList = dp[i-1-j]
+      for(const str1 of leftList){
+        for(const str2 of rightList){
+          set.add('('+str1+')'+str2)
+        }
+      }
+    }
+    dp[i] = Array.from(set)
+  }
+  return dp[n]
+}
+```
+递归
+```ts
+function generateParenthesis(n: number): string[] {
+  const generate= (n: number)=>{
+    if(n===1) return ['()']
+    const pre = generate(n-1)
+    const set = new Set<string>()
+    pre.forEach((val)=>{
+      for(let i=0;i<2*n-2; i++){
+        set.add(val.substring(0, i+1) + '()'+ val.substring(i+1, val.length))
+      }
+    })
+    return [...set]
+  }
+  return generate(n)
+};
+```
+
 ### [46. 全排列](https://leetcode.cn/problems/permutations/)
 ```ts
 //不用遍历的原因： 空间复杂度高
@@ -3348,8 +3319,55 @@ function exist(board: string[][], word: string): boolean {
   return false
 };
 ```
+## 11.滑动窗口
 
-## 11.设计
+### [3. 无重复字符的最长子串]
+(https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+```ts
+function lengthOfLongestSubstring(s: string): number {
+  const set = new Set()
+  let i=0, r=0
+  let len = 0
+  while(i<=r && r<s.length){
+    const c = s.charAt(r)
+    if(!set.has(c)){
+      set.add(c)
+      len = Math.max(len, r-i+1)
+      r++
+    }else{
+      set.delete(s.charAt(i))
+      i++
+    }
+  }
+  return len
+};
+```
+
+### [209. 长度最小的子数组]
+(https://leetcode.cn/problems/minimum-size-subarray-sum/)
+```ts
+function minSubArrayLen(target: number, nums: number[]): number {
+  let len = Infinity
+  let l = 0, r = 0
+  let sum = 0
+  while (r < nums.length) {
+    sum += nums[r]
+    if (sum >= target) {
+      len = Math.min(len, r - l + 1)
+      while (sum >= target) {
+        sum -= nums[l]
+        l++
+        if (sum >= target) len = Math.min(len, r - l + 1)
+      }
+    }
+    r++
+  }
+  return len === Infinity ? 0 : len
+};
+```
+
+
+## 12.设计
 
 ### [297. 二叉树的序列化与反序列化](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/)
 ```ts
@@ -3416,7 +3434,7 @@ class Solution {
 }
 ```
 
-## 12.其他
+## 13.其他
 
 ### [50. Pow(x, n)](https://leetcode.cn/problems/powx-n/)
 ```ts

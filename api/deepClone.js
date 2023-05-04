@@ -5,30 +5,44 @@ function deepClone(source, weakmap) {
     )
   }
   weakmap || (weakmap = new WeakMap())
-  if (isPrimitive(source)) return source
+  if(source === null || typeof source !=='object'){
+    return source
+  }
+  // if (isPrimitive(source)) return source
   const typeStr = Object.prototype.toString.call(source)
   const type = typeStr.substring(8, typeStr.length - 1)
   console.log(type)
   let result = null
   switch (type) {
+    case 'Function':
+      result = new Function('return '+ source.toString())
+      for (key in source) {
+        result[key] = deepClone(source[key], weakmap)
+      }
+      break
     case 'Array':
       result = source.map((val) => deepClone(val, weakmap))
+      break
     case 'Date':
       result = new Date(source)
+      break
     case 'RegExp':
       result = new RegExp(source)
+      break
     case 'Set':
       const set = new Set()
       Object.entries(set).forEach(([key, val]) => {
         set.add(val)
       })
       result = set
+      break
     case 'Map':
       const map = new Map()
       Object.entries(map).forEach(([key, val]) => {
         map.set(key, val)
       })
       result = map
+      break
     case 'Object':
       if (weakmap.has(source)) return weakmap.get(source)
       else {
@@ -41,7 +55,6 @@ function deepClone(source, weakmap) {
   }
   return result
 }
-
 const obj = {
   re: /hello/,
   f() {},

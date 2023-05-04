@@ -1,4 +1,4 @@
-export function stringfy(obj){
+function stringfy(obj){
   const entries = Object.entries(obj)
   return entries.map(([key, val])=>{
     let value

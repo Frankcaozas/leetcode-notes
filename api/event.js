@@ -8,6 +8,7 @@ class EventEmiter {
 
   emit(type, ...args){
     const callbacks = this.event[type]
+    if(!callbacks) return
     callbacks.forEach(callback=>{
       callback(...args)
     })
@@ -43,3 +44,4 @@ e.emit('click', { id: 3 })
 
 //=> 4
 e.emit('click', { id: 4 })
+e.emit('fuck',[])

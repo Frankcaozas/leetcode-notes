@@ -76,6 +76,9 @@ const map = function (items, fn, concurrency = Infinity) {
 
 // map([1, 2, 3], (x) => x * 3).then((o) => console.log(o))
 
-function myRace(){
-  
+function myRace(promises){
+  return new Promise((resolve, reject)=>{
+    promises.forEach((prom)=> prom.then(val=>resolve).catch(e=>reject(e)))
+  })
 }
+
