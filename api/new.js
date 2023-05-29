@@ -16,3 +16,15 @@ function Dog(name){
 const dog = myNew(Dog, "傻🐶");
 dog.say() //my name is傻🐶
 
+
+function reverse(){
+  let i=0 
+  const arr = [1,2,3,4]
+ 
+  while(i<arr.length>>1){
+    [arr[i], arr[arr.length-i-1]] = [arr[arr.length-i-1],arr[i]]
+    i++
+  }
+  return arr
+}
+console.log(reverse())

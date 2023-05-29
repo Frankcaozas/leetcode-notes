@@ -1192,9 +1192,10 @@ function findMin(nums: number[]): number {
   while(l<r){
     const mid = l+Math.floor((r-l)/2)
     if(nums[mid]<nums[r]){
-      r = mid
+      r = mid 
     }else if(nums[mid]>nums[r]){
-      l = mid+1
+      l = mid+1  // 如果mid是最小值， 一定有nums[mid]<nums[r]，
+      //所以从左向右mid+1， 从右向左可能会跳过，so r=mid
     }else{
       r--
     }
@@ -2440,6 +2441,10 @@ function firstUniqChar(s: string): number {
 
   }
 ```
+
+### 415. 字符串相加
+(https://leetcode.cn/problems/add-strings/)
+
 ### [647. 回文子串](https://leetcode.cn/problems/palindromic-substrings/)
 ```ts
 function countSubstrings(s: string): number {

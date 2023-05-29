@@ -18,7 +18,8 @@
       }
       .half-px {
         height: 1px;
-        transform: scaleY(0.5);
+        transform: translate(-50%, -50%);
+        align-items: ;
       }
       .one-px {
         height: 1px;
@@ -37,29 +38,12 @@
       <div class="line one-px"></div>
     </div>
     <script>
-      // // console.log(a)
-      // var a = 'a'
-      // // console.log(a)
-      // var foo = () => {
-      //   // var a = 'a1'
-      //   console.log(a)
-      // }
-      // foo()
-      // console.log(a)
-      // window.b = 'a'
-      // var b = 'c'
-      // console.log(window.b)
-      // console.log(b)
-      setTimeout(() => {
-        console.log('time1')
-        Promise.resolve().then(()=>{
-          console.log('then')
-        })
-      });
-      setTimeout(() => {
-        console.log('time2')
-        
-      });
+      var a = 1
+      function fn() {
+        console.log(a)
+        // var a = 2
+      }
+      fn()
     </script>
   </body>
 </html>
