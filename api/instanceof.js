@@ -13,7 +13,7 @@ function myInstanceOf(object, costructor){
 
 function Person() {}
 const person = new Person();
-
+console.log(Object.getPrototypeOf(Function), Function.prototype)
 console.log(myInstanceOf(person, Person));  // true
 console.log(myInstanceOf(person, Object));  // true
 console.log(myInstanceOf(person, Array));   // false
