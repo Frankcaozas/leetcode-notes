@@ -24,7 +24,7 @@ function heapSort(arr: number[]){
   buildHeap(arr)
   for(let i=arr.length-1; i>=0; i--){
     swap(arr, 0, i)
-    heapify(arr, 0, i-1)
+    heapify(arr, 0, i-1)  
   }
 }
 

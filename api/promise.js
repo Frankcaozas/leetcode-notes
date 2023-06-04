@@ -1,3 +1,4 @@
+//Promise.all
 function mypAll(promises) {
   promises = Array.from(promises)
   return new Promise((resolve, reject) => {
@@ -17,6 +18,23 @@ function mypAll(promises) {
     }
   })
 }
+function myPromiseAll(promises) {
+  const pros = Array.from(promises)
+  return new Promise((resolve, reject) => {
+    let cnt = 0
+    const result = []
+    for (let i = 0; i < pros.length; i++) {
+      Promise.resolve(pros[i])
+        .then((val) => {
+          cnt++
+          result[i] = val
+        })
+        .reject((err) => reject(err))
+    }
+    if (cnt === pros.length) resolve(result)
+  })
+}
+
 // sleep for test
 function sleep(time) {
   return new Promise((resolve) => {
@@ -76,9 +94,12 @@ const map = function (items, fn, concurrency = Infinity) {
 
 // map([1, 2, 3], (x) => x * 3).then((o) => console.log(o))
 
-function myRace(promises){
-  return new Promise((resolve, reject)=>{
-    promises.forEach((prom)=> prom.then(val=>resolve).catch(e=>reject(e)))
+function myRace(promises) {
+  return new Promise((resolve, reject) => {
+    promises.forEach((prom) =>
+      prom.then((val) => resolve).catch((e) => reject(e))
+    )
   })
 }
+
 

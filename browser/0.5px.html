@@ -38,12 +38,17 @@
       <div class="line one-px"></div>
     </div>
     <script>
-      var a = 1
-      function fn() {
-        console.log(a)
-        // var a = 2
+      var x = 1
+      function outer(){
+        console.log(x)
+        var y = 3
+        inner()
       }
-      fn()
+      function inner(){
+        
+        console.log(y)
+      }
+      outer()
     </script>
   </body>
 </html>
