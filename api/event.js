@@ -28,42 +28,41 @@
 //   }
 // }
 
-
-class EventEmiter{
+class EventEmiter {
   events = {}
-  on(type, callback){
-    const event = this.events[type]
-    if(!event) this.events[type] = []
+  on(type, callback) {
+    this.events[type] = this.events[type] || []
     this.events[type].push(callback)
   }
-  off(type, callback){
-    const event = this.events[type]
-    if(!event) this.events[type] = []
-    this.events[type] = this.events[type].filter((call)=>call!==callback)
+  off(type, callback) {
+    const e = this.events[type]
+    if (!e) return
+    this.events[type] = e.filter((fn) => fn !== callback)
   }
-  emit(type, ...args){
-    const event = this.events[type]
-    if(!event) return 
-    event.forEach(fn=>fn(...args))
+  emit(type, ...args) {
+    const e= this.events[type]
+    if(!e) return
+    e.forEach(fn=>fn(...args))
   }
-  once(type, callback){
-    const event = this.events[type]
-    if(!event) this.events[type] = []
-    const call = (...args)=>{
+  once(type, callback) {
+    this.events[type] = this.events[type] || []
+    const fn = (...args)=>{
       callback(...args)
-      this.off(type, call)
+      this.off(type, fn)
     }
-    this.on(type, call)
+    this.on(type, fn)
   }
 }
 const e = new EventEmiter()
 
-const callback = x => { console.log('Click', x.id) }
+const callback = (x) => {
+  console.log('Click', x.id)
+}
 e.on('click', callback)
 e.on('click', callback)
 
 // 只打印一次
-const onceCallback = x => console.log('Once Click', x.id)
+const onceCallback = (x) => console.log('Once Click', x.id)
 e.once('click', onceCallback)
 e.once('click', onceCallback)
 
@@ -72,4 +71,4 @@ e.emit('click', { id: 3 })
 
 //=> 4
 e.emit('click', { id: 4 })
-e.emit('fuck',[])
+e.emit('fuck', [])
