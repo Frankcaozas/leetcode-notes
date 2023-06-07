@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+        function stringify (data) {
+          const pairs = Object.entries(data)
+          const qs = pairs.map(([k, v]) => {
+          let noValue = false
+          if (v === null || v === undefined || typeof v === 'object') {
+            noValue = true
+          }
+            return `${encodeURIComponent(k)}=${noValue ? '' : encodeURIComponent(v)}`
+          }).join('&')
+          return qs
+      }
+          const jsonp = (url, params, callBack)=>{
+            const script = document.createElement('script')
+           
+            const key = 'jsonp' + Math.random(0, 1)
+            window[key] = callBack
+            script.src = url + '?' + stringify({...params, callBack: key})
+            document.appendChild(script)
+          }
+    </script>
+  </body>
+</html>
