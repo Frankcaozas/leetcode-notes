@@ -66,3 +66,4 @@ myPromise.resolve().then(()=>{
 // new myPromise((resolve, reject) => reject('Error')).catch((e) => {
 //   console.log('Error', e)
 // })
+

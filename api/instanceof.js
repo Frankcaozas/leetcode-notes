@@ -19,3 +19,4 @@ console.log(myInstanceOf(person, Object));  // true
 console.log(myInstanceOf(person, Array));   // false
 console.log(myInstanceOf(null, Object));    // false
 console.log(myInstanceOf(undefined, Object)); // false
+console.log(typeof Promise)

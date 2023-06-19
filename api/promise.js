@@ -19,19 +19,18 @@ function mypAll(promises) {
   })
 }
 function myPromiseAll(promises) {
-  const pros = Array.from(promises)
-  return new Promise((resolve, reject) => {
+  promises = Array.from(promises)
+  return new Promise((resolve, reject)=>{
     let cnt = 0
     const result = []
-    for (let i = 0; i < pros.length; i++) {
-      Promise.resolve(pros[i])
-        .then((val) => {
-          cnt++
-          result[i] = val
-        })
-        .reject((err) => reject(err))
+    for(let i=0; i<promises.length; i++){
+      Promise.resolve(promises)
+      .then(val=>{
+        result[i] = val
+        cnt++
+      }).catch(e=>reject(e))
     }
-    if (cnt === pros.length) resolve(result)
+    if(cnt === promises.length) resolve(result)
   })
 }
 

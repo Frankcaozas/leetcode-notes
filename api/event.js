@@ -27,30 +27,35 @@
 //     this.on(type, call)
 //   }
 // }
-
+// on off emit once
 class EventEmiter {
-  events = {}
+  event = {}
+
   on(type, callback) {
-    this.events[type] = this.events[type] || []
-    this.events[type].push(callback)
+    this.event[type] = this.event[type] || []
+    this.event[type].push(callback)
   }
+
   off(type, callback) {
-    const e = this.events[type]
-    if (!e) return
-    this.events[type] = e.filter((fn) => fn !== callback)
+    this.event[type] = this.event[type] || []
+    this.event[type] = this.event[type].filter(fn=>fn!==callback)
   }
-  emit(type, ...args) {
-    const e= this.events[type]
-    if(!e) return
-    e.forEach(fn=>fn(...args))
+
+  emit(type, ...args){
+    const callbacks = this.event[type]
+    if(!callbacks) return 
+    callbacks.forEach(fn => {
+      fn(...args)
+    });
   }
-  once(type, callback) {
-    this.events[type] = this.events[type] || []
-    const fn = (...args)=>{
+
+  once(type, callback){
+    this.event[type] = this.event[type] || []
+    const onceFn = (...args)=>{
       callback(...args)
-      this.off(type, fn)
+      this.off(type, callback)
     }
-    this.on(type, fn)
+    this.on(type, onceFn)
   }
 }
 const e = new EventEmiter()

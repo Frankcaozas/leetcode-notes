@@ -3324,6 +3324,48 @@ function exist(board: string[][], word: string): boolean {
   return false
 };
 ```
+### 91.复原IP地址
+
+https://leetcode.cn/problems/restore-ip-addresses
+
+```ts
+function restoreIpAddresses(s: string): string[] {
+  const list = []
+  let ans = []
+  const dfs = (index: number, l: number) => {
+    // 先遍历完index和s都return
+    if (index === 4  ) {
+      if(l === s.length )
+        ans.push(list.join('.'))
+      return 
+    }
+    if (l === s.length) return 
+
+    if (s.charAt(l) === '0') {
+      list[index] = 0
+      dfs(index + 1, l + 1)
+    } else {
+      let sum = 0
+      for (let r = l; r < s.length; r++) {
+        sum = sum * 10 + (Number(s.charAt(r)) - 0)
+        console.log(sum)
+        if (sum > 0 && sum <= 255) {
+          list[index] = sum
+          dfs(index + 1, r + 1)
+        } else {
+          break
+        }
+      }
+    }
+  }
+
+  dfs(0, 0)
+  return ans
+};
+```
+
+
+
 ## 11.滑动窗口
 
 ### [3. 无重复字符的最长子串]
@@ -3409,7 +3451,7 @@ function deserialize(data: string): TreeNode | null {
     }
     return dfs()
 };
- ```
+```
 
 ### [384. 打乱数组](https://leetcode.cn/problems/shuffle-an-array/)
 ```ts

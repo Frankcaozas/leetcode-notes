@@ -14,24 +14,23 @@ function* gen() {
 function myAsync(fn) {
   return function () {
     const gen = fn()
+
     return new Promise((resolve, reject) => {
-      
-      let result
       function next(key, value) {
+        let res
         try {
-          result = gen[key](value)
-        } catch (err) {
-          reject(err)
+          res = gen[key](value)
+        } catch (e) {
+          reject(e)
         }
-        if (result.done) {
-          resolve(result.value)
-        } else {
-          return Promise.resolve(result.value).then(
-            (val) => next('next', val),
-            (err) => next('throw', err)
-          )
+        if (res.done) resolve(res.value)
+        else {
+          return Promise.resolve(res.value)
+            .then((val) => next('next', val))
+            .catch((err) => next('throw', err))
         }
       }
+
       next('next')
     })
   }
