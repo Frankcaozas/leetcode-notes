@@ -10,7 +10,7 @@ function promisify(fn, path) {
       })
     })
   }
-  
+
 }
 
 const promReadFile = promisify(fs.readFile)

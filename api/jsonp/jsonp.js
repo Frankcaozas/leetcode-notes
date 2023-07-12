@@ -15,7 +15,7 @@ function jsonp({url, fn, params}) {
   const fnName = 'jsonp' + Math.random().toString().slice(3)
   console.log(fnName)
   window[fnName] = fn
-  console.log(window[fnName]);
+  // console.log(window[fnName]);
   script.src = url + '?' + stringify({callback: fnName,...params})
   document.body.appendChild(script)
 }
