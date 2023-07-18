@@ -3,10 +3,10 @@ function myInstanceOf(object, costructor){
   if(typeof costructor !== 'function') return false 
   // null  || undefined
   if(object === null || object === undefined) return false
-  let prototype = Object.getPrototypeOf(object)
-  while(prototype !== null){
-    if(prototype === costructor.prototype) return true
-    prototype = Object.getPrototypeOf(prototype)
+  let proto = Object.getPrototypeOf(object)
+  while(proto !== null){
+    if(proto === costructor.prototype) return true
+    proto = Object.getPrototypeOf(proto)
   }
   return false
 }
