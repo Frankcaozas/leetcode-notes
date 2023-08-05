@@ -40,11 +40,11 @@ const scheduler = new Scheduler()
 const addTask = (time, order) => {
   scheduler.add(() => timeout(time)).then(() => console.log(order))
 }
-const start = new Date().getMilliseconds()
-addTask(1000, '1')
-addTask(500, '2')
-addTask(300, '3')
-addTask(400, '4')
+
+// addTask(1000, '1')
+// addTask(500, '2')
+// addTask(300, '3')
+// addTask(400, '4')
 
 // output: 2 3 1 4
 
@@ -53,3 +53,42 @@ addTask(400, '4')
 // 800ms时，3完成，输出3，任务4进队
 // 1000ms时，1完成，输出1
 // 1200ms时，4完成，输出4
+
+class concurrentScheduler {
+  count = 2
+  queue = []
+  curCnt = 0
+
+  add(task) {
+    this.queue.push(task)
+    this.next()
+  }
+
+  async next() {
+    if (this.curCnt < this.count) {
+      const task = this.queue.shift()
+      if (task) {
+        this.curCnt++
+        await task()
+        this.curCnt--
+        this.next()
+      }
+    }
+  }
+}
+
+const timer = (n, time) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(n)
+      resolve()
+    }, time)
+  })
+
+const s = new concurrentScheduler()
+
+s.add(() => timer('1', 1000))
+s.add(() => timer('2', 500))
+s.add(() => timer('3', 300))
+s.add(() => timer('4', 400))
+

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const p = require('path')
 
-function promisify(fn, path) {
+function promisify(fn) {
   return function(path){
     return new Promise((res, rej) => {
       fn(path, {encodeURI: 'utf-8'},(err, result)=>{
