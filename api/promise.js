@@ -59,7 +59,7 @@ function allSettled(promises) {
 }
 
 // test allSettled
-// allSettled([sleep(3000), sleep(2000), sleep(1000), Promise.reject(10000)]).then(val=>console.log(val))
+allSettled([sleep(3000), sleep(2000), sleep(1000), Promise.reject(10000)]).then(val=>console.log(val))
 
 const map = function (items, fn, concurrency = Infinity) {
   const arr = Array.from(items)
