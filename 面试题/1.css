@@ -1,0 +1,12 @@
+.container{
+  display: flex;
+  padding: 10px;
+}
+
+.container:nth-child(1n+2){
+  margin-left: 20px;
+}
+
+.btn{
+  flex: 1;
+}

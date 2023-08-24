@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        padding: 10px;
+      }
+
+      .btn:nth-child(1n + 2) {
+        margin-left: 20px;
+      }
+
+      .btn {
+        border: solid 1px turquoise;
+        min-width: calc(50%-20px);
+        width: calc(50%-20px);
+        overflow: hidden;
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="btn">xxx</div>
+      <div class="btn">xxxxxxxxxxxxxxxxxxxxxx</div>
+    </div>
+  </body>
+</html>

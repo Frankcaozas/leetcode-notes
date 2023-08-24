@@ -22,3 +22,7 @@ type Omit<T, K extends string | number | symbol> = {
 type Partial<T> = {
   [k in keyof T]?: T[k]
 }
+
+interface test<T extends number>{
+  
+}
