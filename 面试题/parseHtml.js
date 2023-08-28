@@ -43,19 +43,34 @@ function htmlParser(html) {
 
     currentPos = tagEnd + 1;
     parseTag();
+    parseText()
   }
 
+  function parseText() {
+    const tagStart = html.indexOf('<', currentPos);
+    if (tagStart === -1) return;
+    
+    const text = html.substring(currentPos, tagStart);
+    const trimmedText = text.trim();
+    
+    if (trimmedText.length > 0 && stack.length > 0) {
+    const parent = stack[stack.length - 1];
+    parent.children.push(trimmedText);
+    }
+  }
   parseTag();
+  parseText()
 
   return result;
 }
 
 const template = `
 <div id="app">
-  <h1>Hello, {{ name }}!</h1>
+  <h1 data-a='123'>Hello, {{ name }}!</h1>
   <p>Welcome to our website.</p>
 </div>
 `;
 
 const ast = htmlParser(template);
 console.log(JSON.stringify(ast, null, 2));
+console.log(ast)
