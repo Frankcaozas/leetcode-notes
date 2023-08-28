@@ -6,3 +6,9 @@ function nth(n) {
 
 console.log(nth(2))
 console.log(nth(5))
+
+new DOMParser()
+
+//<div> a
+
+//</div>
